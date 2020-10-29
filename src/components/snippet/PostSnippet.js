@@ -20,6 +20,7 @@ import CloseIcon from '@material-ui/icons/Close';
 // Redux
 import { connect } from 'react-redux';
 import { postSnippet, clearErrors } from '../../redux/actions/dataActions';
+import { encodeAudioFile } from '../../redux/actions/audioActions';
 import { setPlayingSnippet, setCurrentTime } from '../../redux/actions/audioActions';
 // Audio
 import WavesUpload from './WavesUpload';
@@ -28,8 +29,8 @@ import WebAudio from '../../audioUtils/webaudio';
 // import { encode } from '../../audioUtils/worker-client';
 import { sliceAudioBuffer } from '../../audioUtils/audio-helper';
 // import audioBufferToWav from '../../audioUtils/abuffer-to-wav';
-// import wavToMp3 from '../../audioUtils/wav-to-mp3';
-// import abufferToMp3 from '../../audioUtils/abuffer-to-mp3';
+import audioEncoder from 'audio-encoder';
+import resampler from 'audio-resampler';
 
 const styles = theme => ({
     submitButton: {
@@ -105,12 +106,6 @@ class PostSnippet extends Component {
     const audioBuffer = await WebAudio.decode(file)
     window.audioBuffer = audioBuffer;
 
-    // const blobUrl = await encode(audioBuffer, 'mp3');
-    // console.log(blobUrl);
-
-    // const url = readBlobURL(blobUrl);
-    // console.log(url);
-
     this.setState({
       // audioFileURLOriginal: url,
       decoding: false,
@@ -180,7 +175,27 @@ class PostSnippet extends Component {
 
     this.setState({
       processing: true,
-    })
+    });
+
+    let resampled;
+    console.log('AudioBuffer before resampling', audioSliced);
+    console.log('Sample rate before resampling', audioSliced.sampleRate);
+    resampler(audioSliced, 44100, function(event) {
+      resampled = event.getAudioBuffer();
+      console.log('AudioBuffer after resampling', resampled);
+      console.log('Sample rate after resampling', resampled.sampleRate);
+      callMe();
+    });
+
+    const callMe = () => audioEncoder(resampled, 128, null, function(blob) {
+      console.log(blob);
+      const audioUrl = readBlobURL(blob);
+      download(audioUrl);
+    });
+
+    // const fd = new FormData();
+    // fd.append('audio', audioSliced); 
+    // this.props.encodeAudioFile(fd); // <-- To API
 
     // const blob = await abufferToMp3(audioSliced);
 
@@ -335,7 +350,13 @@ PostSnippet.propTypes = {
 const mapStateToProps = state => ({
     UI: state.UI,
     snippets: state.data.snippets,
-    currentTime: state.audio.currentTime
+    currentTime: state.audio.currentTime,
 });
 
-export default connect(mapStateToProps, { postSnippet, clearErrors, setPlayingSnippet, setCurrentTime })(withStyles(styles)(PostSnippet));
+export default connect(mapStateToProps, { 
+  postSnippet, 
+  clearErrors, 
+  setPlayingSnippet, 
+  setCurrentTime, 
+  encodeAudioFile 
+})(withStyles(styles)(PostSnippet));

@@ -1,8 +1,10 @@
-import { SET_PLAYING_SNIPPET, SET_CURRENT_TIME } from '../types';
+import { SET_PLAYING_SNIPPET, SET_CURRENT_TIME, ENCODING_AUDIO_FILE, SET_ENCODED_FILE } from '../types';
 
 const initialState = {
   playingSnippet: '',
   currentTime: 0,
+  encoding: false,
+  encodedFile: null,
 };
 
 export default function (state = initialState, action) {
@@ -17,6 +19,17 @@ export default function (state = initialState, action) {
         ...state,
         currentTime: action.payload,
       };
+    case ENCODING_AUDIO_FILE:
+      return {
+        ...state,
+        encoding: true,
+      };
+    case SET_ENCODED_FILE:
+      return {
+        ...state,
+        encodedFile: action.payload,
+        encoding: false,
+      }
     default:
       return state;
   }

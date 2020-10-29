@@ -6,6 +6,7 @@ function encodeAudioBufferLame ({channels, sampleRate}) {
   console.log(channels)
   // new an encoder: bitRate = 192
   const encoder = new Mp3LameEncoder(sampleRate, 192);
+  // Total memory is set on Mp3LameEncoder.js line 1204
   // Mp3LameEncoder.Mp3LameEncoderConfig = { TOTAL_MEMORY: 1073741824 };
   encoder.encode(channels)
 
