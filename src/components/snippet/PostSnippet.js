@@ -29,8 +29,7 @@ import WebAudio from '../../audioUtils/webaudio';
 import { sliceAudioBuffer } from '../../audioUtils/audio-helper';
 // import audioBufferToWav from '../../audioUtils/abuffer-to-wav';
 // import wavToMp3 from '../../audioUtils/wav-to-mp3';
-
-// import abufferToMp3 from '../../audioUtils/abuffer-to-mp3';
+import abufferToMp3 from '../../audioUtils/abuffer-to-mp3';
 
 const styles = theme => ({
     submitButton: {
@@ -183,12 +182,11 @@ class PostSnippet extends Component {
       processing: true,
     })
 
-    //TODO:
-    // const blob = await abufferToMp3(audioSliced);
+    const blob = await abufferToMp3(audioSliced);
 
-    // const audioUrl = await readBlobURL(blob);
+    const audioUrl = await readBlobURL(blob);
 
-    // await download(audioUrl);
+    await download(audioUrl);
 
     // console.log(blob);
 
