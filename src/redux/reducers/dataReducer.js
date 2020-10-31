@@ -37,10 +37,15 @@ export default function(state = initialState, action){
                 snippet: action.payload
             };
         case PLAY_SNIPPET:
+            index = state.snippets.findIndex(snippet => snippet.snippetId === action.payload.snippetId);
+            state.snippets[index] = action.payload
             return {
                 ...state,
-                playSnippet: action.payload
-            }
+                snippet: {
+                    ...state.snippet,
+                    playCount : action.payload.playCount,
+                }
+            };
         case LIKE_SNIPPET:
         case UNLIKE_SNIPPET:
             index = state.snippets.findIndex(snippet => snippet.snippetId === action.payload.snippetId);

@@ -1,4 +1,5 @@
 import {
+  SET_FINGERPRINT,
   SET_USER,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
@@ -9,10 +10,12 @@ import {
 } from "../types";
 
 const initialState = {
+  fingerprint: null,
   authenticated: false,
   loading: false,
   credentials: {},
   likes: [],
+  plays: [],
   notifications: [],
 };
 
@@ -48,15 +51,20 @@ export default function (state = initialState, action) {
         ]
       };
     case UNLIKE_SNIPPET:
-        return {
-          ...state,
-          likes: state.likes.filter(like => like.snippetId !== action.payload.snippetId)
-        };
+      return {
+        ...state,
+        likes: state.likes.filter(like => like.snippetId !== action.payload.snippetId)
+      };
     case MARK_NOTIFICATIONS_READ:
-        state.notifications.forEach(notification => notification.read = true);
-        return {
-          ...state
-        };
+      state.notifications.forEach(notification => notification.read = true);
+      return {
+        ...state
+      };
+    case SET_FINGERPRINT:
+      return {
+        ...state,
+        fingerprint: action.payload,
+      }
     default:
       return state;
   }

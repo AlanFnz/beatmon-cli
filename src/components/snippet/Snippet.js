@@ -10,6 +10,7 @@ import SnippetDialog from "./SnippetDialog";
 import LikeButton from "./LikeButton";
 //Redux
 import { connect } from "react-redux";
+import { playSnippetLogged, playSnippetNotLogged } from '../../redux/actions/dataActions';
 // Material UI
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -59,6 +60,27 @@ const styles = (theme) => ({
 
 class Snippet extends Component {
 
+  playSnippet = () => {
+    // Check user authentication
+    if(this.props.user.authenticated){
+      // If already played this snippet, the do nothing
+      if(this.props.user.plays && this.props.user.plays.find(play => play.snippetId === this.props.snippet.snippetId))
+        { return } else {
+        // If not, then call action
+        this.props.playSnippetLogged(this.props.snippet.snippetId);
+      }
+    } else {
+      // If not logged, check fingerprint-snippet relation. If already played, return.
+      if(localStorage.getItem('fingerprint') && localStorage.getItem(this.props.snippet.snippetId) === 'yes') { return } else {
+        // If not, save fingerprint and snippet id on local storage
+        localStorage.setItem('fingerprint', this.props.user.fingerprint);
+        localStorage.setItem(this.props.snippet.snippetId, 'yes');
+        // Then call action
+        this.props.playSnippetNotLogged(this.props.snippet.snippetId);
+      }
+    }
+  };
+  
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -66,7 +88,7 @@ class Snippet extends Component {
       snippet: {
         body,
         audio,
-        reproductionsCount,
+        playCount,
         createdAt,
         userImage,
         userHandle,
@@ -113,7 +135,7 @@ class Snippet extends Component {
           <Typography variant="body1" className={classes.TypoMargin}>
             {body}
           </Typography>
-          <Waves audio={audio}/>
+          <Waves audio={audio} onPlay={this.playSnippet}/>
           <LikeButton snippetId={snippetId} />
           <span>{likeCount} </span>
           <CustomButton tip="Comments">
@@ -123,7 +145,7 @@ class Snippet extends Component {
           <CustomButton tip="Reproductions">
             <PlayCircleFilledIcon color="primary" />
           </CustomButton>
-          <span>{reproductionsCount} </span>
+          <span>{playCount} </span>
           <SnippetDialog
             snippetId={snippetId}
             userHandle={userHandle}
@@ -146,4 +168,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Snippet));
+export default connect(mapStateToProps, { playSnippetLogged, playSnippetNotLogged })(withStyles(styles)(Snippet));

@@ -4,7 +4,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CustomButton from '../../util/CustomButton';
 import firebase from "firebase";
 // import FileUploader from "react-firebase-file-uploader";
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import FilePicker from './FilePicker';
 // Material UI
 import Button from '@material-ui/core/Button';
@@ -24,13 +24,11 @@ import { encodeAudioFile } from '../../redux/actions/audioActions';
 import { setPlayingSnippet, setCurrentTime } from '../../redux/actions/audioActions';
 // Audio
 import WavesUpload from './WavesUpload';
-import { isAudio, readBlobURL, download, rename } from '../../audioUtils/utils';
+import { isAudio } from '../../audioUtils/utils';
 import WebAudio from '../../audioUtils/webaudio';
 // import { encode } from '../../audioUtils/worker-client';
 import { sliceAudioBuffer } from '../../audioUtils/audio-helper';
-// import audioBufferToWav from '../../audioUtils/abuffer-to-wav';
-import audioEncoder from 'audio-encoder';
-import resampler from 'audio-resampler';
+import encoder from '../../audioUtils/encoder';
 
 const styles = theme => ({
     submitButton: {
@@ -54,15 +52,12 @@ class PostSnippet extends Component {
     open: false,
     body: "",
     errors: {},
-    file: null,
-    decoding: false,
     audioBuffer: null,
     isFileLoaded: false,
-    audioFileURLOriginal: '',
-    audioFileURLCutted: '',
-    isUploading: false,
+    isFileProcessed: false,
+    audioFile: '',
+    isProcessing: false,
     currentTime: 0,
-    processing: false,
   };
 
   static getDerivedStateFromProps(nextProps){
@@ -75,7 +70,14 @@ class PostSnippet extends Component {
 
   componentDidUpdate(prevProps){
     if(prevProps.snippets !== this.props.snippets){
-      this.setState({ open: false, errors: {}, body: '', isFileLoaded: false, audioFileURLOriginal: '', isUploading: false });
+      this.setState({ 
+        open: false,
+        errors: {},
+        body: '',
+        isFileLoaded: false,
+        audioFile: '', 
+        isProcessing: false,
+      });
     }
   }
 
@@ -85,7 +87,13 @@ class PostSnippet extends Component {
 
   handleClose = () => {
     this.props.clearErrors();
-    this.setState({ open: false, errors: {}, body: '', isFileLoaded: false, audioFileURLOriginal: '', isUploading: false });
+    this.setState({ 
+      open: false, 
+      errors: {}, 
+      body: '', 
+      isFileLoaded: false, 
+      audioFile: '', 
+      isFileProcessed: false });
   };
 
   //TODO:
@@ -94,12 +102,9 @@ class PostSnippet extends Component {
       return alert('Select audio file')
     }
 
-    console.log(file);
-    const audioFileURLOriginal = URL.createObjectURL(file);
+    const audioFile = URL.createObjectURL(file);
     this.setState({
-      file,
-      audioFileURLOriginal,
-      // decoding: true,
+      audioFile,
       audioBuffer: null,
     })
 
@@ -107,22 +112,11 @@ class PostSnippet extends Component {
     window.audioBuffer = audioBuffer;
 
     this.setState({
-      // audioFileURLOriginal: url,
-      decoding: false,
       audioBuffer,
       startTime: 0,
       currentTime: 0,
-      endTime: audioBuffer.duration / 2,
       isFileLoaded: true,
-    })
-  }
-
-  get startByte () {
-    return parseInt(this.audioBuffer.length * this.state.start / this.widthDurationRatio / this.duration, 10)
-  }
-
-  get endByte () {
-    return parseInt(this.audioBuffer.length * this.state.end / this.widthDurationRatio / this.duration, 10)
+    });
   }
 
   handleChange = (event) => {
@@ -135,27 +129,11 @@ class PostSnippet extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.postSnippet({ body: this.state.body });
+    this.props.postSnippet({ 
+      body: this.state.body,
+      audio: this.state.audioFile,
+    });
   }
-
-  handleUploadStart = () => {
-    this.setState({  isUploading: true })
-  }
-
-  handleUploadError = error => {
-    this.setState({ isUploading: false, isFileLoaded: false });
-    console.log(error);
-  };
-
-  handleUploadSuccess = async filename => {
-    this.setState({ isUploading: false, isFileLoaded: true });
-    await firebase
-      .storage()
-      .ref("audio")
-      .child(filename)
-      .getDownloadURL()
-      .then(url => this.setState({ audioFileURLOriginal: url }));
-  };
 
   //TODO:
   cutAudioFile = async (e) => {
@@ -165,64 +143,45 @@ class PostSnippet extends Component {
     const startTime = Math.round(currentTime);
     const endTime = startTime + 15;
 
-    console.log(currentTime);
-
+    // Slice audio
     const audioSliced = sliceAudioBuffer(
       audioBuffer,
       ~~(length * startTime / duration),
       ~~(length * endTime / duration),
-    )
+    );
 
+    // Set processing state
     this.setState({
-      processing: true,
+      isProcessing: true,
     });
 
-    let resampled;
-    console.log('AudioBuffer before resampling', audioSliced);
-    console.log('Sample rate before resampling', audioSliced.sampleRate);
-    resampler(audioSliced, 44100, function(event) {
-      resampled = event.getAudioBuffer();
-      console.log('AudioBuffer after resampling', resampled);
-      console.log('Sample rate after resampling', resampled.sampleRate);
-      callMe();
+    // Encode audio
+    const audioFinal = await encoder(audioSliced);
+    
+    // Setting file name
+    const randomId = uuidv4();
+    const fileName = `${this.props.user.credentials.userId}-${Date.now()}-${randomId}`;
+
+    // Uploading file
+    await firebase
+      .storage()
+      .ref(`audio/${fileName}.mp3`)
+      .put(audioFinal)
+    
+    // Getting and setting URL to player input
+    await firebase
+      .storage()
+      .ref('audio')
+      .child(`${fileName}.mp3`)
+      .getDownloadURL()
+      .then(url => this.setState({ audioFile: url }));
+
+    // Set process state
+    this.setState({ 
+      isFileProcessed: true,
+      isProcessing: false,
     });
-
-    const callMe = () => audioEncoder(resampled, 128, null, function(blob) {
-      console.log(blob);
-      const audioUrl = readBlobURL(blob);
-      download(audioUrl);
-    });
-
-    // const fd = new FormData();
-    // fd.append('audio', audioSliced); 
-    // this.props.encodeAudioFile(fd); // <-- To API
-
-    // const blob = await abufferToMp3(audioSliced);
-
-    // const audioUrl = await readBlobURL(blob);
-
-    // await download(audioUrl);
-
-    // console.log(blob);
-
-    // const wavAudio = await audioBufferToWav(audioSliced);
-    // console.log(wavAudio);
-
-    // const mp3Audio = await wavToMp3(1, 256, wavAudio);
-    // console.log(mp3Audio);
-
-    // encode(audioSliced, 'mp3')
-    //   .then(readBlobURL)
-    //   .then(url => {
-    //     download(url, rename(this.state.file.name, 'mp3'))
-    //   })
-    //   .catch((e) => console.error(e))
-    //   .then(() => {
-    //     this.setState({
-    //       processing: false,
-    //     })
-    //   })
-  }
+  };
 
   render() {
     const { errors } = this.state;
@@ -231,28 +190,23 @@ class PostSnippet extends Component {
       UI: { loading },
     } = this.props;
     // console.log(this.props.currentTime);
-
+    
     let wavesUploadMarkup = this.state.isFileLoaded ? (
-      <Fragment>
-        <WavesUpload audio={this.state.audioFileURLOriginal}  />
-        <p>Snippets have a duration of 15 seconds. Choose your starting point</p>
-        <Button size="small" color="secondary" variant="contained" component="span" onClick={this.cutAudioFile}>Crop audio</Button>
-      </Fragment>
+        <WavesUpload audio={this.state.audioFile} />
     ) : ( null );
 
+    let cropButtonMarkup;
+    if (this.state.isFileLoaded === true && this.state.isFileProcessed === false) {
+      cropButtonMarkup =
+        <Fragment>
+          <p>Snippets have a duration of 15 seconds. Choose your starting point</p>
+          <Button size="small" color="secondary" variant="contained" component="span" onClick={this.cutAudioFile}>Crop audio</Button>
+        </Fragment>
+    } else {
+      cropButtonMarkup = null;
+    }
+
     let fileUploaderMarkup = this.state.isFileLoaded ? null : (
-      // <FileUploader
-      //   hidden
-      //   id="upload-audio"
-      //   accept=".mp3"
-      //   name="audio"
-      //   randomizeFilename
-      //   storageRef={firebase.storage().ref("audio")}
-      //   onUploadStart={this.handleUploadStart}
-      //   onUploadError={this.handleUploadError}
-      //   onUploadSuccess={this.handleUploadSuccess}
-      //   onProgress={this.handleProgress}
-      // />
       <FilePicker id="upload-audio" onChange={this.handleFileChange}>
         <Button
           size="small"
@@ -327,6 +281,7 @@ class PostSnippet extends Component {
                     {fileUploaderMarkup}
                     {/* {uploadButtonMarkup} */}
                     {wavesUploadMarkup}
+                    {cropButtonMarkup}
                     {/* {loadedFileMarkup} */}
                     </Grid>
                   </label>
@@ -351,6 +306,7 @@ const mapStateToProps = state => ({
     UI: state.UI,
     snippets: state.data.snippets,
     currentTime: state.audio.currentTime,
+    user: state.user,
 });
 
 export default connect(mapStateToProps, { 
@@ -358,5 +314,6 @@ export default connect(mapStateToProps, {
   clearErrors, 
   setPlayingSnippet, 
   setCurrentTime, 
-  encodeAudioFile 
+  encodeAudioFile,
+   
 })(withStyles(styles)(PostSnippet));

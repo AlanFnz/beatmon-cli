@@ -10,7 +10,7 @@ class Waves extends Component {
   };
 
   render() {
-    const { audio } = this.props;
+    const { audio, onPlay } = this.props;
     return (
       <div>
         <AudioPlayer
@@ -25,6 +25,7 @@ class Waves extends Component {
           customControlsSection={[RHAP_UI.MAIN_CONTROLS, RHAP_UI.VOLUME]}
           customVolumeControls={[]}
           preload='none'
+          onPlay={onPlay}
         />
       </div>
     );

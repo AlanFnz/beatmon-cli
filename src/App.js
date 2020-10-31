@@ -7,10 +7,11 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import themeFile from './util/theme';
 import jwtDecode from 'jwt-decode';
 import { v4 as uuidv4 } from 'uuid';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 // Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { SET_AUTHENTICATED } from './redux/types';
+import { SET_AUTHENTICATED, SET_FINGERPRINT } from './redux/types';
 import { logoutUser, getUserData } from './redux/actions/userActions';
 //Components
 import Navbar from './components/layout/Navbar';
@@ -29,15 +30,29 @@ firebase.initializeApp(config);
 
 const token = localStorage.FBIdToken;
 if (token){
+  // Decode Token
   const decodedToken = jwtDecode(token);
+  // If it's expired, then logout
   if(decodedToken.exp * 1000 < Date.now()){
     store.dispatch(logoutUser());
   } else {
+    // If not, then authorize 
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common['Authorization'] = token;
     store.dispatch(getUserData());
   }
-}
+} else {
+  (async () => {
+    // Load fingerprint
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    // Dispatch identifier
+    store.dispatch ({
+      type: SET_FINGERPRINT,
+      payload: result.visitorId,
+    });  
+  })()
+};
 
 function App() {
   return (
