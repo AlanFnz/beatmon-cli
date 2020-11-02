@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import SnippetBase from './SnippetBase';
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -58,28 +59,7 @@ const styles = (theme) => ({
   },
 });
 
-class Snippet extends Component {
-
-  playSnippet = () => {
-    // Check user authentication
-    if(this.props.user.authenticated){
-      // If already played this snippet, the do nothing
-      if(this.props.user.plays && this.props.user.plays.find(play => play.snippetId === this.props.snippet.snippetId))
-        { return } else {
-        // If not, then call action
-        this.props.playSnippetLogged(this.props.snippet.snippetId);
-      }
-    } else {
-      // If not logged, check fingerprint-snippet relation. If already played, return.
-      if(localStorage.getItem('fingerprint') && localStorage.getItem(this.props.snippet.snippetId) === 'yes') { return } else {
-        // If not, save fingerprint and snippet id on local storage
-        localStorage.setItem('fingerprint', this.props.user.fingerprint);
-        localStorage.setItem(this.props.snippet.snippetId, 'yes');
-        // Then call action
-        this.props.playSnippetNotLogged(this.props.snippet.snippetId);
-      }
-    }
-  };
+class Snippet extends SnippetBase {
   
   render() {
     dayjs.extend(relativeTime);
