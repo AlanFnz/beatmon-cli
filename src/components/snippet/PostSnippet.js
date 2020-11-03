@@ -27,7 +27,7 @@ import {
 } from "../../redux/actions/audioActions";
 // Audio
 import WavesUpload from "./WavesUpload";
-import { isAudio } from "../../audioUtils/utils";
+import { isAudio, readBlobURL } from "../../audioUtils/utils";
 import WebAudio from "../../audioUtils/webaudio";
 import { sliceAudioBuffer } from "../../audioUtils/audio-helper";
 import encoder from "../../audioUtils/encoder";
@@ -58,6 +58,7 @@ class PostSnippet extends Component {
     isFileLoaded: false,
     isFileProcessed: false,
     audioFile: "",
+    audioBlob: null,
     isProcessing: false,
     currentTime: 0,
   };
@@ -130,16 +131,35 @@ class PostSnippet extends Component {
     this.props.clearErrors();
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Setting file name
+    const randomId = uuidv4();
+    const fileName = `${
+      this.props.user.credentials.userId
+    }-${Date.now()}-${randomId}`;
+
+    // Uploading file
+    await firebase.storage().ref(`audio/${fileName}.mp3`).put(this.state.audioBlob);
+
+    // Getting and setting URL to player input
+    await firebase
+      .storage()
+      .ref("audio")
+      .child(`${fileName}.mp3`)
+      .getDownloadURL()
+      .then((url) => this.setState({ audioFile: url }))
+
     this.props.postSnippet({
       body: this.state.body,
       audio: this.state.audioFile,
+      genre: 'house',
     });
   };
 
   //TODO:
-  cutAudioFile = async (e) => {
+  cutAudioFile = async (event) => {
     const { audioBuffer } = this.state;
     const { currentTime } = this.props;
     const { length, duration } = audioBuffer;
@@ -161,22 +181,11 @@ class PostSnippet extends Component {
     // Encode audio
     const audioFinal = await encoder(audioSliced);
 
-    // Setting file name
-    const randomId = uuidv4();
-    const fileName = `${
-      this.props.user.credentials.userId
-    }-${Date.now()}-${randomId}`;
-
-    // Uploading file
-    await firebase.storage().ref(`audio/${fileName}.mp3`).put(audioFinal);
-
-    // Getting and setting URL to player input
-    await firebase
-      .storage()
-      .ref("audio")
-      .child(`${fileName}.mp3`)
-      .getDownloadURL()
-      .then((url) => this.setState({ audioFile: url }));
+    const blobUrl = readBlobURL(audioFinal);
+    this.setState({ 
+      audioFile: blobUrl,
+      audioBlob: audioFinal,
+    });
 
     // Set process state
     this.setState({

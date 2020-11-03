@@ -102,7 +102,7 @@ class Snippet extends SnippetBase {
             color="primary"
             className={classes.TypoMargin}
           >
-            {userHandle}
+            @{userHandle}
           </Typography>
           {deleteButton}
           <Typography
