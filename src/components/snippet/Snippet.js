@@ -27,7 +27,7 @@ const styles = (theme) => ({
   card: {
     position: "relative",
     display: "flex",
-    marginBottom: "20px",
+    marginBottom: "8px",
     minWidth: "260px",
   },
   image: {

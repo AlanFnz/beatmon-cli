@@ -4,6 +4,7 @@ import axios from "../axios";
 // Material UI
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
+import Container from '@material-ui/core/Container';
 // Components
 import Snippet from "../components/snippet/Snippet";
 import Profile from "../components/profile/Profile";
@@ -69,33 +70,35 @@ class user extends Component {
     );
 
     return (
-      <Grid container spacing={2}>
-        <Hidden smUp>
-          <Grid item sm={4} xs={12}>
-            {this.state.profile === null ? (
-              <ProfileSkeleton />
-            ) : authenticated && isLoggedUser ? (
-              <Profile />
-            ) : (
-              <StaticProfile profile={this.state.profile} />
-            )}
+      <Container maxWidth='md'>
+        <Grid container spacing={1}>
+          <Hidden smUp>
+            <Grid item sm={4} xs={12}>
+              {this.state.profile === null ? (
+                <ProfileSkeleton />
+              ) : authenticated && isLoggedUser ? (
+                <Profile />
+              ) : (
+                <StaticProfile profile={this.state.profile} />
+              )}
+            </Grid>
+          </Hidden>
+          <Grid item sm={8} xs={12}>
+            {snippetsMarkup}
           </Grid>
-        </Hidden>
-        <Grid item sm={8} xs={12}>
-          {snippetsMarkup}
+          <Hidden only='xs'>
+            <Grid item sm={4} xs={12}>
+              {this.state.profile === null ? (
+                <ProfileSkeleton />
+              ) : authenticated && isLoggedUser ? (
+                <Profile />
+              ) : (
+                <StaticProfile profile={this.state.profile} />
+              )}
+            </Grid>
+          </Hidden>
         </Grid>
-        <Hidden only='xs'>
-          <Grid item sm={4} xs={12}>
-            {this.state.profile === null ? (
-              <ProfileSkeleton />
-            ) : authenticated && isLoggedUser ? (
-              <Profile />
-            ) : (
-              <StaticProfile profile={this.state.profile} />
-            )}
-          </Grid>
-        </Hidden>
-      </Grid>
+      </Container>
     );
   }
 }

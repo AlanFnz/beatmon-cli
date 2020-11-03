@@ -5,6 +5,7 @@ import {
   SET_UNAUTHENTICATED,
   LOADING_USER,
   LIKE_SNIPPET,
+  PLAY_SNIPPET,
   UNLIKE_SNIPPET, 
   MARK_NOTIFICATIONS_READ
 } from "../types";
@@ -44,6 +45,17 @@ export default function (state = initialState, action) {
         ...state,
         likes: [
           ...state.likes,
+          {
+            userHandle: state.credentials.handle,
+            snippetId: action.payload.snippetId
+          }
+        ]
+      };
+    case PLAY_SNIPPET:
+      return {
+        ...state,
+        plays: [
+          ...state.plays,
           {
             userHandle: state.credentials.handle,
             snippetId: action.payload.snippetId

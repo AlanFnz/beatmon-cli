@@ -1,50 +1,52 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import CustomButton from '../../util/CustomButton';
+import CustomButton from "../../util/CustomButton";
 import firebase from "firebase";
 // import FileUploader from "react-firebase-file-uploader";
-import { v4 as uuidv4 } from 'uuid';
-import FilePicker from './FilePicker';
+import { v4 as uuidv4 } from "uuid";
+import FilePicker from "./FilePicker";
 // Material UI
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 // Icons
-import AddIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 // Redux
-import { connect } from 'react-redux';
-import { postSnippet, clearErrors } from '../../redux/actions/dataActions';
-import { encodeAudioFile } from '../../redux/actions/audioActions';
-import { setPlayingSnippet, setCurrentTime } from '../../redux/actions/audioActions';
+import { connect } from "react-redux";
+import { postSnippet, clearErrors } from "../../redux/actions/dataActions";
+import { encodeAudioFile } from "../../redux/actions/audioActions";
+import {
+  setPlayingSnippet,
+  setCurrentTime,
+} from "../../redux/actions/audioActions";
 // Audio
-import WavesUpload from './WavesUpload';
-import { isAudio } from '../../audioUtils/utils';
-import WebAudio from '../../audioUtils/webaudio';
-// import { encode } from '../../audioUtils/worker-client';
-import { sliceAudioBuffer } from '../../audioUtils/audio-helper';
-import encoder from '../../audioUtils/encoder';
+import WavesUpload from "./WavesUpload";
+import { isAudio } from "../../audioUtils/utils";
+import WebAudio from "../../audioUtils/webaudio";
+import { sliceAudioBuffer } from "../../audioUtils/audio-helper";
+import encoder from "../../audioUtils/encoder";
 
-const styles = theme => ({
-    submitButton: {
-        marginTop: '1rem',
-        marginBottom: '1rem',
-        position: 'relative',
-        float: 'right'
-    },
-    progressSpinner: {
-        position: 'absolute',
-    },
-    closeButton: {
-        position: 'absolute',
-        left: '91%',
-        top: '6%'
-    }
+const styles = (theme) => ({
+  submitButton: {
+    marginTop: "1rem",
+    marginBottom: "1rem",
+    position: "relative",
+    float: "right",
+  },
+  progressSpinner: {
+    position: "absolute",
+  },
+  closeButton: {
+    position: "absolute",
+    left: "91%",
+    top: "6%",
+  },
 });
 
 class PostSnippet extends Component {
@@ -55,27 +57,27 @@ class PostSnippet extends Component {
     audioBuffer: null,
     isFileLoaded: false,
     isFileProcessed: false,
-    audioFile: '',
+    audioFile: "",
     isProcessing: false,
     currentTime: 0,
   };
 
-  static getDerivedStateFromProps(nextProps){
-    if(nextProps.UI.errors) {
-        return ({ errors: nextProps.UI.errors})
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.UI.errors) {
+      return { errors: nextProps.UI.errors };
     } else {
-        return null;
+      return null;
     }
   }
 
-  componentDidUpdate(prevProps){
-    if(prevProps.snippets !== this.props.snippets){
-      this.setState({ 
+  componentDidUpdate(prevProps) {
+    if (prevProps.snippets !== this.props.snippets) {
+      this.setState({
         open: false,
         errors: {},
-        body: '',
+        body: "",
         isFileLoaded: false,
-        audioFile: '', 
+        audioFile: "",
         isProcessing: false,
       });
     }
@@ -87,28 +89,29 @@ class PostSnippet extends Component {
 
   handleClose = () => {
     this.props.clearErrors();
-    this.setState({ 
-      open: false, 
-      errors: {}, 
-      body: '', 
-      isFileLoaded: false, 
-      audioFile: '', 
-      isFileProcessed: false });
+    this.setState({
+      open: false,
+      errors: {},
+      body: "",
+      isFileLoaded: false,
+      audioFile: "",
+      isFileProcessed: false,
+    });
   };
 
   //TODO:
-  handleFileChange = async file => {
+  handleFileChange = async (file) => {
     if (!isAudio(file)) {
-      return alert('Select audio file')
+      return alert("Select audio file");
     }
 
     const audioFile = URL.createObjectURL(file);
     this.setState({
       audioFile,
       audioBuffer: null,
-    })
+    });
 
-    const audioBuffer = await WebAudio.decode(file)
+    const audioBuffer = await WebAudio.decode(file);
     window.audioBuffer = audioBuffer;
 
     this.setState({
@@ -117,23 +120,23 @@ class PostSnippet extends Component {
       currentTime: 0,
       isFileLoaded: true,
     });
-  }
+  };
 
   handleChange = (event) => {
-    this.setState({ 
+    this.setState({
       [event.target.name]: event.target.value,
-      errors: {}
+      errors: {},
     });
     this.props.clearErrors();
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    this.props.postSnippet({ 
+    this.props.postSnippet({
       body: this.state.body,
       audio: this.state.audioFile,
     });
-  }
+  };
 
   //TODO:
   cutAudioFile = async (e) => {
@@ -146,8 +149,8 @@ class PostSnippet extends Component {
     // Slice audio
     const audioSliced = sliceAudioBuffer(
       audioBuffer,
-      ~~(length * startTime / duration),
-      ~~(length * endTime / duration),
+      ~~((length * startTime) / duration),
+      ~~((length * endTime) / duration)
     );
 
     // Set processing state
@@ -157,27 +160,26 @@ class PostSnippet extends Component {
 
     // Encode audio
     const audioFinal = await encoder(audioSliced);
-    
+
     // Setting file name
     const randomId = uuidv4();
-    const fileName = `${this.props.user.credentials.userId}-${Date.now()}-${randomId}`;
+    const fileName = `${
+      this.props.user.credentials.userId
+    }-${Date.now()}-${randomId}`;
 
     // Uploading file
-    await firebase
-      .storage()
-      .ref(`audio/${fileName}.mp3`)
-      .put(audioFinal)
-    
+    await firebase.storage().ref(`audio/${fileName}.mp3`).put(audioFinal);
+
     // Getting and setting URL to player input
     await firebase
       .storage()
-      .ref('audio')
+      .ref("audio")
       .child(`${fileName}.mp3`)
       .getDownloadURL()
-      .then(url => this.setState({ audioFile: url }));
+      .then((url) => this.setState({ audioFile: url }));
 
     // Set process state
-    this.setState({ 
+    this.setState({
       isFileProcessed: true,
       isProcessing: false,
     });
@@ -190,18 +192,32 @@ class PostSnippet extends Component {
       UI: { loading },
     } = this.props;
     // console.log(this.props.currentTime);
-    
+
     let wavesUploadMarkup = this.state.isFileLoaded ? (
-        <WavesUpload audio={this.state.audioFile} />
-    ) : ( null );
+      <WavesUpload audio={this.state.audioFile} />
+    ) : null;
 
     let cropButtonMarkup;
-    if (this.state.isFileLoaded === true && this.state.isFileProcessed === false) {
-      cropButtonMarkup =
+    if (
+      this.state.isFileLoaded === true &&
+      this.state.isFileProcessed === false
+    ) {
+      cropButtonMarkup = (
         <Fragment>
-          <p>Snippets have a duration of 15 seconds. Choose your starting point</p>
-          <Button size="small" color="secondary" variant="contained" component="span" onClick={this.cutAudioFile}>Crop audio</Button>
+          <p>
+            Snippets have a duration of 15 seconds. Choose your starting point
+          </p>
+          <Button
+            size="small"
+            color="secondary"
+            variant="contained"
+            component="span"
+            onClick={this.cutAudioFile}
+          >
+            Crop audio
+          </Button>
         </Fragment>
+      );
     } else {
       cropButtonMarkup = null;
     }
@@ -221,21 +237,18 @@ class PostSnippet extends Component {
 
     let submitButtonMarkup = this.state.isFileLoaded ? (
       <Button
-      type="submit"
-      variant="contained"
-      color="primary"
-      className={classes.submitButton}
-      disabled={loading}
-    >
-      {loading && (
-        <CircularProgress
-          size={30}
-          className={classes.progressSpinner}
-        />
-      )}
-      Submit
-    </Button>
-    ) : (null);
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={classes.submitButton}
+        disabled={loading}
+      >
+        {loading && (
+          <CircularProgress size={30} className={classes.progressSpinner} />
+        )}
+        Submit
+      </Button>
+    ) : null;
 
     return (
       <Fragment>
@@ -258,7 +271,7 @@ class PostSnippet extends Component {
           <DialogTitle>Post a new Snippet</DialogTitle>
           <DialogContent>
             <form onSubmit={this.handleSubmit}>
-              <Grid container spacing={1} >
+              <Grid container spacing={1}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     name="body"
@@ -267,8 +280,8 @@ class PostSnippet extends Component {
                     multiline
                     rows="2"
                     placeholder="In a few words"
-                    error={errors.body ? true : false}
-                    helperText={errors.body}
+                    error={errors.error ? true : false}
+                    helperText={errors.error}
                     className={classes.textField}
                     onChange={this.handleChange}
                     fullWidth
@@ -276,13 +289,18 @@ class PostSnippet extends Component {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <label htmlFor="upload-audio"> 
-                    <Grid container direction="column" alignItems="center" justify="center">
-                    {fileUploaderMarkup}
-                    {/* {uploadButtonMarkup} */}
-                    {wavesUploadMarkup}
-                    {cropButtonMarkup}
-                    {/* {loadedFileMarkup} */}
+                  <label htmlFor="upload-audio">
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      justify="center"
+                    >
+                      {fileUploaderMarkup}
+                      {/* {uploadButtonMarkup} */}
+                      {wavesUploadMarkup}
+                      {cropButtonMarkup}
+                      {/* {loadedFileMarkup} */}
                     </Grid>
                   </label>
                 </Grid>
@@ -294,26 +312,25 @@ class PostSnippet extends Component {
       </Fragment>
     );
   }
-};
+}
 
 PostSnippet.propTypes = {
-    postSnippet: PropTypes.func.isRequired,
-    UI: PropTypes.object.isRequired,
-    clearErrors: PropTypes.func.isRequired
+  postSnippet: PropTypes.func.isRequired,
+  UI: PropTypes.object.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    UI: state.UI,
-    snippets: state.data.snippets,
-    currentTime: state.audio.currentTime,
-    user: state.user,
+const mapStateToProps = (state) => ({
+  UI: state.UI,
+  snippets: state.data.snippets,
+  currentTime: state.audio.currentTime,
+  user: state.user,
 });
 
-export default connect(mapStateToProps, { 
-  postSnippet, 
-  clearErrors, 
-  setPlayingSnippet, 
-  setCurrentTime, 
+export default connect(mapStateToProps, {
+  postSnippet,
+  clearErrors,
+  setPlayingSnippet,
+  setCurrentTime,
   encodeAudioFile,
-   
 })(withStyles(styles)(PostSnippet));

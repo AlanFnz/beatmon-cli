@@ -11,7 +11,7 @@ const styles = theme => ({
     ...theme.spread,
     card: {
         display: 'flex',
-        marginBottom: 20
+        marginBottom: 8
     },
     cardContent: {
         width: '100%',

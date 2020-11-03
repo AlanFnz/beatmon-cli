@@ -88,9 +88,10 @@ export const postSnippet = (newSnippet) => (dispatch) => {
       dispatch(clearErrors());
     })
     .catch((err) => {
+      console.log(err.response.data.error);
       dispatch({
         type: SET_ERRORS,
-        payload: err,
+        payload: err.response.data,
       });
     });
 };

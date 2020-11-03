@@ -43,7 +43,7 @@ export default function(state = initialState, action){
                 ...state,
                 snippet: {
                     ...state.snippet,
-                    playCount : action.payload.playCount,
+                    playCount: action.payload.playCount,
                 }
             };
         case LIKE_SNIPPET:
