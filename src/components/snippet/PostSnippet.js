@@ -59,6 +59,7 @@ class PostSnippet extends Component {
     isFileProcessed: false,
     audioFile: "",
     audioBlob: null,
+    isLoading: false,
     isProcessing: false,
     currentTime: 0,
   };
@@ -100,7 +101,6 @@ class PostSnippet extends Component {
     });
   };
 
-  //TODO:
   handleFileChange = async (file) => {
     if (!isAudio(file)) {
       return alert("Select audio file");
@@ -108,6 +108,7 @@ class PostSnippet extends Component {
 
     const audioFile = URL.createObjectURL(file);
     this.setState({
+      isLoading: true,
       audioFile,
       audioBuffer: null,
     });
@@ -119,6 +120,7 @@ class PostSnippet extends Component {
       audioBuffer,
       startTime: 0,
       currentTime: 0,
+      isLoading: false,
       isFileLoaded: true,
     });
   };
@@ -158,7 +160,6 @@ class PostSnippet extends Component {
     });
   };
 
-  //TODO:
   cutAudioFile = async (event) => {
     const { audioBuffer } = this.state;
     const { currentTime } = this.props;
@@ -166,17 +167,17 @@ class PostSnippet extends Component {
     const startTime = Math.round(currentTime);
     const endTime = startTime + 15;
 
+    // Set processing state
+    this.setState({
+      isProcessing: true,
+    });
+
     // Slice audio
     const audioSliced = sliceAudioBuffer(
       audioBuffer,
       ~~((length * startTime) / duration),
       ~~((length * endTime) / duration)
     );
-
-    // Set processing state
-    this.setState({
-      isProcessing: true,
-    });
 
     // Encode audio
     const audioFinal = await encoder(audioSliced);
@@ -202,16 +203,17 @@ class PostSnippet extends Component {
     } = this.props;
     // console.log(this.props.currentTime);
 
-    let wavesUploadMarkup = this.state.isFileLoaded ? (
+    let wavesUploadMarkup = this.state.isFileLoaded ? this.state.isProcessing ? <CircularProgress size={30} className={classes.progressSpinner} /> : (
       <WavesUpload audio={this.state.audioFile} />
     ) : null;
 
     let cropButtonMarkup;
     if (
       this.state.isFileLoaded === true &&
-      this.state.isFileProcessed === false
+      this.state.isFileProcessed === false &&
+      this.state.isProcessing === false
     ) {
-      cropButtonMarkup = (
+      cropButtonMarkup =
         <Fragment>
           <p>
             Snippets have a duration of 15 seconds. Choose your starting point
@@ -226,12 +228,11 @@ class PostSnippet extends Component {
             Crop audio
           </Button>
         </Fragment>
-      );
     } else {
       cropButtonMarkup = null;
     }
 
-    let fileUploaderMarkup = this.state.isFileLoaded ? null : (
+    let fileUploaderMarkup = this.state.isFileLoaded ? null : ( this.state.isLoading ? <CircularProgress size={30} className={classes.progressSpinner} /> : (
       <FilePicker id="upload-audio" onChange={this.handleFileChange}>
         <Button
           size="small"
@@ -242,9 +243,9 @@ class PostSnippet extends Component {
           Select audio
         </Button>
       </FilePicker>
-    );
+    ));
 
-    let submitButtonMarkup = this.state.isFileLoaded ? (
+    let submitButtonMarkup = this.state.isFileProcessed ? (
       <Button
         type="submit"
         variant="contained"
