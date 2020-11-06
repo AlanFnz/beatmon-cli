@@ -66,6 +66,12 @@ const styles = (theme) => ({
     position: "absolute",
     right: "6px",
   },
+  genre: {
+    marginLeft: '6px',
+    display: 'inline',
+    color: '#fcbb6d',
+    fontWeight: '700',
+  },
 });
 
 class SnippetDialog extends SnippetBase {
@@ -109,6 +115,7 @@ class SnippetDialog extends SnippetBase {
         snippetId,
         body,
         audio,
+        genre,
         createdAt,
         likeCount,
         playCount,
@@ -139,9 +146,22 @@ class SnippetDialog extends SnippetBase {
             @{userHandle}
           </Typography>
           <hr className={classes.invisibleSeparator} />
-          <Typography variant="body2" color="textSecondary">
-            {dayjs(createdAt).format("h:mm a, DD MM YYYY")}
-          </Typography>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
+            <Typography
+              variant='body2'
+              color='textSecondary'
+              className={classes.date}
+            >
+              {dayjs(createdAt).fromNow()}.
+            </Typography>
+            <Typography
+              variant='body2'
+              color='primary'
+              className={classes.genre}
+            >
+              #{genre}
+            </Typography>
+          </div>
           <hr className={classes.invisibleSeparator} />
           <Typography variant="body1">{body}</Typography>
           <Waves audio={audio} onPlay={this.playSnippet}/>

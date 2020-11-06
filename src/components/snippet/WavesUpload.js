@@ -22,6 +22,7 @@ class WavesUpload extends Component {
     return (
       <div>
         <AudioPlayer
+          autoPlayAfterSrcChange={false}
           style={{ width: "200px" }}
           src={audio}
           showJumpControls={false}

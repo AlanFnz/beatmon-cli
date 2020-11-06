@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import CustomButton from "../../util/CustomButton";
-import PostSnippet from "../snippet/PostSnippet";
+import PostSnippet from "../snippet/post/PostSnippet";
 import Notifications from "./Notifications";
 import withStyles from "@material-ui/core/styles/withStyles";
 // Redux

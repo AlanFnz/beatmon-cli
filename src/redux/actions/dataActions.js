@@ -175,3 +175,7 @@ export const getUserData = (userHandle) => (dispatch) => {
 export const clearErrors = () => (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
 };
+
+export const setError = (error) => (dispatch) => {
+  dispatch({ type: SET_ERRORS, payload: error});
+};

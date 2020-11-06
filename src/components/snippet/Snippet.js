@@ -1,61 +1,68 @@
-import React from "react";
+import React from 'react';
 import SnippetBase from './SnippetBase';
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import PropTypes from "prop-types";
-import CustomButton from "../../util/CustomButton";
-import DeleteSnippet from "./DeleteSnippet";
-import SnippetDialog from "./SnippetDialog";
-import LikeButton from "./LikeButton";
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import PropTypes from 'prop-types';
+import CustomButton from '../../util/CustomButton';
+import DeleteSnippet from './DeleteSnippet';
+import SnippetDialog from './SnippetDialog';
+import LikeButton from './LikeButton';
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { playSnippetLogged, playSnippetNotLogged } from '../../redux/actions/dataActions';
 // Material UI
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
 // Icons
-import ChatIcon from "@material-ui/icons/Chat";
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import ChatIcon from '@material-ui/icons/Chat';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 // Audio
 import Waves from './Waves';
 
 const styles = (theme) => ({
+  ...theme.spread,
   card: {
-    position: "relative",
-    display: "flex",
-    marginBottom: "8px",
-    minWidth: "260px",
+    position: 'relative',
+    display: 'flex',
+    marginBottom: '8px',
+    minWidth: '260px',
   },
   image: {
-    [theme.breakpoints.up("xs")]: {
-      minWidth: "84px",
-      height: "84px",
-      borderRadius: "58px",
+    [theme.breakpoints.up('xs')]: {
+      minWidth: '84px',
+      height: '84px',
+      borderRadius: '58px',
     },
-    [theme.breakpoints.up("md")]: {
-      width: "108px",
-      height: "108px",
-      borderRadius: "110px",
+    [theme.breakpoints.up('md')]: {
+      width: '108px',
+      height: '108px',
+      borderRadius: '110px',
     },
-    objectFit: "cover",
-    margin: "0px",
-    boxSizing: "border-box",
-    position: "relative",
-    marginLeft: "12px",
-    marginTop: "12px",
-    float: "left",
-    clear: "both",
+    objectFit: 'cover',
+    margin: '0px',
+    boxSizing: 'border-box',
+    position: 'relative',
+    marginLeft: '12px',
+    marginTop: '12px',
+    float: 'left',
+    clear: 'both',
   },
   content: {
-    padding: "12px 6px",
-    objectFit: "cover",
+    padding: '12px 6px',
+    objectFit: 'cover',
   },
   TypoMargin: {
-    marginLeft: "6px",
+    marginLeft: '6px',
+  },
+  genre: {
+    marginLeft: '6px',
+    display: 'inline',
+    color: '#fcbb6d',
+    fontWeight: '700',
   },
 });
 
@@ -68,6 +75,7 @@ class Snippet extends SnippetBase {
       snippet: {
         body,
         audio,
+        genre,
         playCount,
         createdAt,
         userImage,
@@ -92,38 +100,47 @@ class Snippet extends SnippetBase {
         <CardMedia
           className={classes.image}
           image={userImage}
-          title="Profile image"
+          title='Profile image'
         />
         <CardContent className={classes.content}>
           <Typography
-            variant="h6"
+            variant='h6'
             component={Link}
             to={`/users/${userHandle}`}
-            color="primary"
+            color='primary'
             className={classes.TypoMargin}
           >
             @{userHandle}
           </Typography>
           {deleteButton}
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            className={classes.TypoMargin}
-          >
-            {dayjs(createdAt).fromNow()}
-          </Typography>
-          <Typography variant="body1" className={classes.TypoMargin}>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
+            <Typography
+              variant='body2'
+              color='textSecondary'
+              className={classes.date}
+            >
+              {dayjs(createdAt).fromNow()}.
+            </Typography>
+            <Typography
+              variant='body2'
+              color='primary'
+              className={classes.genre}
+            >
+              #{genre}
+            </Typography>
+          </div>
+          <Typography variant='body1' className={classes.TypoMargin}>
             {body}
           </Typography>
           <Waves audio={audio} onPlay={this.playSnippet}/>
           <LikeButton snippetId={snippetId} />
           <span>{likeCount} </span>
-          <CustomButton tip="Comments">
-            <ChatIcon color="primary" />
+          <CustomButton tip='Comments'>
+            <ChatIcon color='primary' />
           </CustomButton>
           <span>{commentCount} </span>
-          <CustomButton tip="Reproductions">
-            <PlayCircleFilledIcon color="primary" />
+          <CustomButton tip='Reproductions'>
+            <PlayCircleFilledIcon color='primary' />
           </CustomButton>
           <span>{playCount} </span>
           <SnippetDialog
