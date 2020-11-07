@@ -12,11 +12,44 @@ import SnippetSkeleton from "../util/SnippetSkeleton";
 // Redux
 import { connect } from "react-redux";
 // Actions
-import { getSnippets } from "../redux/actions/dataActions";
+import { getSnippets, getSnippetsNav } from "../redux/actions/dataActions";
 
 class home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        height: window.innerHeight,
+    };
+    this.handleScroll = this.handleScroll.bind(this);
+  }
+  
+  handleScroll() {
+    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    const windowBottom = windowHeight + window.pageYOffset;
+    if (!this.props.data.lastVisible) {
+      if (!this.props.data.loading && 
+        windowBottom >= docHeight) {
+          this.props.getSnippetsNav();
+      } 
+    } else {
+      if (!this.props.data.loading && 
+        windowBottom >= docHeight &&
+        this.props.data.lastVisible._fieldsProto.createdAt.stringValue !== this.props.data.lastSnippet._fieldsProto.createdAt.stringValue) {
+          this.props.getSnippetsNav(this.props.data.lastVisible);
+      } 
+    }
+  }
+
   componentDidMount() {
-    this.props.getSnippets();
+    window.addEventListener("scroll", this.handleScroll);
+    this.props.getSnippetsNav(this.props.data.lastVisible);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   render() {
@@ -54,4 +87,4 @@ const mapStateToProps = (state) => ({
   data: state.data,
 });
 
-export default connect(mapStateToProps, { getSnippets })(home);
+export default connect(mapStateToProps, { getSnippets, getSnippetsNav })(home);

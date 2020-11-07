@@ -1,5 +1,6 @@
 import {
   SET_SNIPPETS,
+  SET_SNIPPETS_NAV,
   LOADING_DATA,
   LIKE_SNIPPET,
   UNLIKE_SNIPPET,
@@ -25,6 +26,26 @@ export const getSnippets = () => (dispatch) => {
         type: SET_SNIPPETS,
         payload: res.data,
       });
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_SNIPPETS,
+        payload: [],
+      });
+    });
+};
+
+// Get snippets with pagination
+export const getSnippetsNav = (lastVisible) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  const url = lastVisible ? 'next' : 'first' ;
+  axios
+    .post(`/snippets/${url}`, lastVisible)
+    .then((res) => {
+      dispatch({
+        type: SET_SNIPPETS_NAV,
+        payload: res.data,
+      })
     })
     .catch((err) => {
       dispatch({

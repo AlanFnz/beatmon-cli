@@ -177,7 +177,6 @@ class PostSnippet extends Component {
   };
 
   handleGenreSelection = (event) => {
-    console.log(event.target.value);
     this.setState({ genre: event.target.value })
   };
 
