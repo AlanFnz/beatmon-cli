@@ -2,6 +2,7 @@ import {
   SET_SNIPPETS,
   SET_SNIPPETS_NAV,
   SET_SNIPPET,
+  CLEAR_SNIPPETS,
   PLAY_SNIPPET,
   LIKE_SNIPPET,
   UNLIKE_SNIPPET,
@@ -47,6 +48,15 @@ export default function (state = initialState, action) {
       return {
         ...state,
         snippet: action.payload,
+      };
+    case CLEAR_SNIPPETS:
+      return {
+        snippets: [],
+        snippet: {},
+        loading: false,
+        playSnippet: null,
+        lastVisible: null,
+        lastSnippet: null,
       };
     case PLAY_SNIPPET:
       index = state.snippets.findIndex(

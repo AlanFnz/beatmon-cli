@@ -8,6 +8,7 @@ import {
   POST_SNIPPET,
   SET_ERRORS,
   CLEAR_ERRORS,
+  CLEAR_SNIPPETS,
   LOADING_UI,
   SET_SNIPPET,
   PLAY_SNIPPET,
@@ -195,6 +196,10 @@ export const getUserData = (userHandle) => (dispatch) => {
 
 export const clearErrors = () => (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
+};
+
+export const clearSnippets = () => (dispatch) => {
+  dispatch({ type: CLEAR_SNIPPETS });
 };
 
 export const setError = (error) => (dispatch) => {

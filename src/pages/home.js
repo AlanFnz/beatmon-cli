@@ -12,7 +12,7 @@ import SnippetSkeleton from "../util/SnippetSkeleton";
 // Redux
 import { connect } from "react-redux";
 // Actions
-import { getSnippets, getSnippetsNav } from "../redux/actions/dataActions";
+import { getSnippets, getSnippetsNav, clearSnippets } from "../redux/actions/dataActions";
 
 class home extends Component {
   constructor(props) {
@@ -43,8 +43,9 @@ class home extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
+    await this.props.clearSnippets();
     this.props.getSnippetsNav(this.props.data.lastVisible);
   }
 
@@ -87,4 +88,4 @@ const mapStateToProps = (state) => ({
   data: state.data,
 });
 
-export default connect(mapStateToProps, { getSnippets, getSnippetsNav })(home);
+export default connect(mapStateToProps, { getSnippets, getSnippetsNav, clearSnippets })(home);
