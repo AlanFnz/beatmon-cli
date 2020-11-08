@@ -1,5 +1,6 @@
 import {
   SET_SNIPPETS,
+  SET_SNIPPETS_USER,
   SET_SNIPPETS_NAV,
   LOADING_DATA,
   LIKE_SNIPPET,
@@ -30,7 +31,7 @@ export const getSnippets = () => (dispatch) => {
     })
     .catch((err) => {
       dispatch({
-        type: SET_SNIPPETS,
+        type: SET_SNIPPETS_NAV,
         payload: [],
       });
     });
@@ -45,6 +46,45 @@ export const getSnippetsNav = (lastVisible) => (dispatch) => {
     .then((res) => {
       dispatch({
         type: SET_SNIPPETS_NAV,
+        payload: res.data,
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_SNIPPETS,
+        payload: [],
+      });
+    });
+};
+
+// Get user data and snippets
+export const getUserData = (userHandle) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .get(`/user/${userHandle}`)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: SET_SNIPPETS_USER,
+        payload: res.data,
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: SET_SNIPPETS,
+        payload: null,
+      });
+    });
+};
+
+// Get more user snippets with pagination
+export const getMoreUserSnippetsNav = (lastVisible, handle) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .post(`/user/${handle}/next`, lastVisible)
+    .then((res) => {
+      dispatch({
+        type: SET_SNIPPETS_USER,
         payload: res.data,
       })
     })
@@ -174,24 +214,6 @@ export const deleteSnippet = (snippetId) => (dispatch) => {
       });
     })
     .catch((err) => console.log(err));
-};
-
-export const getUserData = (userHandle) => (dispatch) => {
-  dispatch({ type: LOADING_DATA });
-  axios
-    .get(`/user/${userHandle}`)
-    .then((res) => {
-      dispatch({
-        type: SET_SNIPPETS,
-        payload: res.data.snippets,
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: SET_SNIPPETS,
-        payload: null,
-      });
-    });
 };
 
 export const clearErrors = () => (dispatch) => {

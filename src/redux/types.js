@@ -13,6 +13,7 @@ export const LOADING_DATA = 'LOADING_DATA';
 export const STOP_LOADING_UI = 'STOP_LOADING_UI';
 // Data reducer types
 export const SET_SNIPPETS = 'SET_SNIPPETS';
+export const SET_SNIPPETS_USER = 'SET_SNIPPETS_USER';
 export const SET_SNIPPETS_NAV = 'SET_SNIPPETS_NAV';
 export const SET_SNIPPET = 'SET_SNIPPET';
 export const CLEAR_SNIPPETS = 'CLEAR_SNIPPETS';

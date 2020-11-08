@@ -1,5 +1,6 @@
 import {
   SET_SNIPPETS,
+  SET_SNIPPETS_USER,
   SET_SNIPPETS_NAV,
   SET_SNIPPET,
   CLEAR_SNIPPETS,
@@ -19,6 +20,7 @@ const initialState = {
   playSnippet: null,
   lastVisible: null,
   lastSnippet: null,
+  lastUserSnippet: null,
 };
 
 export default function (state = initialState, action) {
@@ -34,6 +36,17 @@ export default function (state = initialState, action) {
         ...state,
         snippets: action.payload.snippets,
         lastVisible: action.payload.lastVisible,
+        lastSnippet: state.lastSnippet === null ?  action.payload.lastSnippet : state.lastSnippet,
+        lastUserSnippet: state.lastUserSnippet === null ?  action.payload.lastUserSnippet : state.lastUserSnippet,
+        loading: false,
+      };
+    case SET_SNIPPETS_USER:
+      return {
+        ...state,
+        snippets: state.snippets.concat(action.payload.userData.snippets),
+        lastVisible: action.payload.lastVisible,
+        lastUserSnippet: state.lastUserSnippet === null ?  action.payload.lastUserSnippet : state.lastUserSnippet,
+        // lastUserSnippet: action.payload.lastUserSnippet,
         loading: false,
       };
     case SET_SNIPPETS_NAV:
@@ -51,12 +64,7 @@ export default function (state = initialState, action) {
       };
     case CLEAR_SNIPPETS:
       return {
-        snippets: [],
-        snippet: {},
-        loading: false,
-        playSnippet: null,
-        lastVisible: null,
-        lastSnippet: null,
+        ...initialState
       };
     case PLAY_SNIPPET:
       index = state.snippets.findIndex(
@@ -76,9 +84,6 @@ export default function (state = initialState, action) {
         (snippet) => snippet.snippetId === action.payload.snippetId
       );
       state.snippets[index] = action.payload;
-      // if(state.snippet.snippetId === action.payload.snippetId) {
-      //  state.snippet = action.payload;
-      // };
       return {
         ...state,
         snippet: {

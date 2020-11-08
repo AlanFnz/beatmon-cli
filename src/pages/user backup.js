@@ -14,50 +14,23 @@ import SnippetSkeleton from "../util/SnippetSkeleton";
 import ProfileSkeleton from "../util/ProfileSkeleton";
 // Redux
 import { connect } from "react-redux";
-import { getUserData, getMoreUserSnippetsNav, clearSnippets } from "../redux/actions/dataActions";
+import { getUserData } from "../redux/actions/dataActions";
 
 class user extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        height: window.innerHeight,
-        profile: null,
-        snippetIdParam: null,
-        userHandle: null,
-    };
-    this.handleScroll = this.handleScroll.bind(this);
-  }
+  state = {
+    profile: null,
+    snippetIdParam: null,
+    userHandle: null,
+  };
 
-  handleScroll() {
-    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    const windowBottom = windowHeight + window.pageYOffset;
-    if (!this.props.data.lastVisible) {
-      if (!this.props.data.loading && 
-        windowBottom >= docHeight) {
-          this.props.getMoreUserSnippetsNav(null, this.props.match.params.handle);
-      } 
-    } else {
-      if (!this.props.data.loading && 
-        windowBottom >= docHeight &&
-        this.props.data.lastVisible._fieldsProto.createdAt.stringValue !== this.props.data.lastUserSnippet._fieldsProto.createdAt.stringValue) {
-          this.props.getMoreUserSnippetsNav(this.props.data.lastVisible, this.props.match.params.handle);
-      } 
-    }
-  }
-
-  async componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
-    await this.props.clearSnippets();
+  componentDidMount() {
     const userHandle = this.props.match.params.handle;
     const snippetId = this.props.match.params.snippetId;
 
     if (snippetId) this.setState({ snippetIdParam: snippetId });
     if (userHandle) this.setState({ userHandle: userHandle });
 
-    // Get user details
+    // Get user detail
     this.props.getUserData(userHandle);
     // Get user snippets
     axios
@@ -71,8 +44,7 @@ class user extends Component {
   }
 
   render() {
-    const { snippets } = this.props.data;
-    const { loading } = this.props.data
+    const { loading, snippets } = this.props.data;
     const { snippetIdParam } = this.state;
     const {
       credentials: { handle },
@@ -143,4 +115,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { getUserData, getMoreUserSnippetsNav, clearSnippets })(user);
+export default connect(mapStateToProps, { getUserData })(user);
