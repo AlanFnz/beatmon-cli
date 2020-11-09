@@ -122,6 +122,8 @@ class Snippet extends SnippetBase {
               {dayjs(createdAt).fromNow()}.
             </Typography>
             <Typography
+              component={Link}
+              to={`/nav/${genre}`}
               variant='body2'
               color='primary'
               className={classes.genre}

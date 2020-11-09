@@ -17,9 +17,9 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 import Navbar from './components/layout/Navbar';
 import AuthRoute from './util/AuthRoute';
 // Pages
-import home from './pages/home';
-import login from './pages/login';
-import signup from './pages/signup';
+import Home from './pages/home';
+import Login from './pages/login';
+import Signup from './pages/signup';
 import User from './pages/user';
 // Firebase
 import firebase from 'firebase';
@@ -63,16 +63,17 @@ function App() {
           <Navbar />
           <div className="container">
             <Switch>
-              <Route exact path="/" component={home} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/nav/:genre" render={(props) => <Home {...props} key={uuidv4()}/>} />
               <AuthRoute
                 exact
                 path="/login"
-                component={login}
+                component={Login}
               />
               <AuthRoute
                 exact
                 path="/signup"
-                component={signup}
+                component={Signup}
               />
               {/* <Route exact path="/users/:handle" component={User} /> */}
               <Route exact path="/users/:handle" render={(props) => <User {...props} key={uuidv4()}/>} />

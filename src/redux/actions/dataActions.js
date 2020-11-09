@@ -57,13 +57,32 @@ export const getSnippetsNav = (lastVisible) => (dispatch) => {
     });
 };
 
+// Get snippets by genre with pagination
+export const getSnippetsByGenre = (lastVisible, genre) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  const url = lastVisible ? 'next' : 'first' ;
+  axios
+    .post(`/${genre}/${url}`, lastVisible)
+    .then((res) => {
+      dispatch({
+        type: SET_SNIPPETS_NAV,
+        payload: res.data,
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_SNIPPETS,
+        payload: [],
+      });
+    });
+};
+
 // Get user data and snippets
 export const getUserData = (userHandle) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
     .get(`/user/${userHandle}`)
     .then((res) => {
-      console.log(res.data);
       dispatch({
         type: SET_SNIPPETS_USER,
         payload: res.data,

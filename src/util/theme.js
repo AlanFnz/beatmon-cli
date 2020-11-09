@@ -61,6 +61,7 @@ export default {
       paper: {
         padding: 20,
         minWidth: '220px',
+        marginBottom: '10px',
       },
       profile: {
         "& .image-wrapper": {

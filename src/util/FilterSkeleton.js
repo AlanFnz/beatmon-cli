@@ -7,23 +7,17 @@ import Paper from "@material-ui/core/Paper";
 
 const styles = (theme) => ({
   ...theme.spread,
-  handle: {
-    height: 20,
-    backgroundColor: "rgba(0, 188, 212, 0.4)",
-    width: 60,
-    margin: "0 auto 7px auto",
-  },
   fullLine: {
     height: 15,
-    backgroundColor: "rgba(0,0,0, 0.15)",
-    width: "100%",
-    marginBottom: 10,
+    backgroundColor: "rgba(252,187,109, 0.6)",
+    width: "85%",
+    margin: "0 auto 10px auto",
   },
   halfLine: {
     height: 15,
     backgroundColor: "rgba(0,0,0, 0.15)",
     width: "50%",
-    margin: "0 auto 5px auto",
+    margin: "5px auto 15px auto",
   },
 });
 
@@ -32,21 +26,16 @@ const ProfileSkeleton = (props) => {
   return (
       <Paper className={classes.paper}>
         <div className={classes.profile}>
-          <div className="image-wrapper">
-            <img src={NoImg} alt="profile" className="profile-image" />
-          </div>
-          <hr />
           <div className="profile-details">
-            <div className={classes.handle} />
+            <div className={classes.halfLine} />
             <hr />
             <div className={classes.fullLine} />
+            <hr />
             <div className={classes.fullLine} />
             <hr />
-            <div className={classes.halfLine} />
+            <div className={classes.fullLine} />
             <hr />
-            <div className={classes.halfLine} />
-            <hr />
-            <div className={classes.halfLine} />
+            <div className={classes.fullLine} />
           </div>
         </div>
       </Paper>
