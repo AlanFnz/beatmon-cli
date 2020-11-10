@@ -18,7 +18,7 @@ export default {
         root: {
           padding: '8px 5px 5px 5px'
         }
-      }
+      },
     },
     spread: {
       typography: {

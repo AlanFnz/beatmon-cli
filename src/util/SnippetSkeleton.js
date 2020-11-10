@@ -51,7 +51,7 @@ const styles = theme => ({
 const SnippetSkeleton = props => {
     const { classes } = props;
 
-    const content = Array.from({ length: 5 }).map((item, index) => (
+    const content = Array.from({ length: 8 }).map((item, index) => (
         <Card className={classes.card} key={index}>
             <CardMedia className={classes.cover} image={NoImg} />
             <CardContent className={classes.cardContent}>

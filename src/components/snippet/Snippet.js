@@ -33,14 +33,14 @@ const styles = (theme) => ({
   },
   image: {
     [theme.breakpoints.up('xs')]: {
-      minWidth: '84px',
-      height: '84px',
-      borderRadius: '58px',
+      minWidth: '50px',
+      height: '50px',
+      borderRadius: '50px',
     },
     [theme.breakpoints.up('md')]: {
-      width: '108px',
-      height: '108px',
-      borderRadius: '110px',
+      width: '80px',
+      height: '80px',
+      borderRadius: '80px',
     },
     objectFit: 'cover',
     margin: '0px',
@@ -48,6 +48,7 @@ const styles = (theme) => ({
     position: 'relative',
     marginLeft: '12px',
     marginTop: '12px',
+    marginRight: '4px',
     float: 'left',
     clear: 'both',
   },
@@ -64,6 +65,9 @@ const styles = (theme) => ({
     color: '#fcbb6d',
     fontWeight: '700',
   },
+  userHandle: {
+    fontSize: '16px'
+  }
 });
 
 class Snippet extends SnippetBase {
@@ -108,7 +112,7 @@ class Snippet extends SnippetBase {
             component={Link}
             to={`/users/${userHandle}`}
             color='primary'
-            className={classes.TypoMargin}
+            className={`${classes.TypoMargin} ${classes.userHandle}`}
           >
             @{userHandle}
           </Typography>
