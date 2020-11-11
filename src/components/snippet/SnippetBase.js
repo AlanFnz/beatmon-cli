@@ -4,6 +4,7 @@ import { Component } from "react";
 class SnippetBase extends Component {
 
   playSnippet = () => {
+    this.props.setPlayingSnippet(this.props.snippet.snippetId);
     // Check user authentication
     if(this.props.user.authenticated){
       // If already played this snippet, the do nothing

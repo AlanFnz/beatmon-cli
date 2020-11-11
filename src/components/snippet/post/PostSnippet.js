@@ -10,27 +10,15 @@ import FilePicker from '../FilePicker';
 // Material UI
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
 // Icons
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 // Redux
 import { connect } from 'react-redux';
 import { postSnippet, setError, clearErrors } from '../../../redux/actions/dataActions';
-import {
-  setPlayingSnippet,
-  setCurrentTime,
-} from '../../../redux/actions/audioActions';
 // Audio
 import WavesUpload from '../WavesUpload';
 import { isAudio, readBlobURL } from '../../../audioUtils/utils';
@@ -221,7 +209,6 @@ class PostSnippet extends Component {
       classes,
       UI: { loading },
     } = this.props;
-    const maxWidth = this.width < 500 ? '370px' : '444px';
 
     // Declaring markups
     let wavesUploadMarkup,
@@ -230,7 +217,6 @@ class PostSnippet extends Component {
       submitButtonMarkup,
       nextButtonMarkup,
       textFieldMarkup,
-      genreSelectionMarkup,
       firstInstanceMarkup,
       secondInstanceMarkup;
 
@@ -420,7 +406,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   postSnippet,
   clearErrors,
-  setPlayingSnippet,
-  setCurrentTime,
   setError
 })(withStyles(styles)(PostSnippet));

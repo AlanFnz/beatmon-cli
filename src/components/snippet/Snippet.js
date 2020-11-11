@@ -12,6 +12,7 @@ import LikeButton from './LikeButton';
 //Redux
 import { connect } from 'react-redux';
 import { playSnippetLogged, playSnippetNotLogged } from '../../redux/actions/dataActions';
+import { setPlayingSnippet } from '../../redux/actions/audioActions';
 // Material UI
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -63,11 +64,19 @@ const styles = (theme) => ({
     marginLeft: '6px',
     display: 'inline',
     color: '#fcbb6d',
+    fontSize: '13px',
     fontWeight: '700',
+  },
+  date: {
+    fontSize: '13px',
+    marginLeft: '4px',
   },
   userHandle: {
     fontSize: '16px'
-  }
+  },
+  body: {
+    margin: '4px 0px 5px 6px',
+  },
 });
 
 class Snippet extends SnippetBase {
@@ -135,10 +144,10 @@ class Snippet extends SnippetBase {
               #{genre}
             </Typography>
           </div>
-          <Typography variant='body1' className={classes.TypoMargin}>
+          <Typography variant='body1' className={classes.body}>
             {body}
           </Typography>
-          <Waves audio={audio} onPlay={this.playSnippet}/>
+          <Waves audio={audio} onPlay={this.playSnippet} snippetId={snippetId} />
           <LikeButton snippetId={snippetId} />
           <span>{likeCount} </span>
           <CustomButton tip='Comments'>
@@ -169,6 +178,7 @@ Snippet.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  audio: state.audio,
 });
 
-export default connect(mapStateToProps, { playSnippetLogged, playSnippetNotLogged })(withStyles(styles)(Snippet));
+export default connect(mapStateToProps, { playSnippetLogged, playSnippetNotLogged, setPlayingSnippet })(withStyles(styles)(Snippet));
