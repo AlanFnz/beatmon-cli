@@ -64,6 +64,7 @@ class PostSnippet extends Component {
     isFileLoaded: false,
     isFileProcessed: false,
     audioFile: '',
+    audioFileName: '',
     audioBlob: null,
     isLoading: false,
     isProcessing: false,
@@ -137,6 +138,7 @@ class PostSnippet extends Component {
     const fileName = `${
       this.props.user.credentials.userId
     }-${Date.now()}-${randomId}`;
+    this.setState({ audioFileName: fileName });
 
     // Uploading file
     await firebase.storage().ref(`audio/${fileName}.mp3`).put(this.state.audioBlob);
@@ -152,6 +154,7 @@ class PostSnippet extends Component {
     this.props.postSnippet({
       body: this.state.body,
       audio: this.state.audioFile,
+      audioFileName: this.state.audioFileName,
       genre: this.state.genre,
     });
   };
