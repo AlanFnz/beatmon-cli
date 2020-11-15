@@ -4,7 +4,9 @@ import axios from "../axios";
 // Material UI
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
-import Container from '@material-ui/core/Container';
+import Container from "@material-ui/core/Container";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
 // Components
 import Snippet from "../components/snippet/Snippet";
 import Profile from "../components/profile/Profile";
@@ -14,37 +16,66 @@ import SnippetSkeleton from "../util/SnippetSkeleton";
 import ProfileSkeleton from "../util/ProfileSkeleton";
 // Redux
 import { connect } from "react-redux";
-import { getUserData, getMoreUserSnippetsNav, clearSnippets } from "../redux/actions/dataActions";
+import {
+  getUserData,
+  getMoreUserSnippetsNav,
+  clearSnippets,
+} from "../redux/actions/dataActions";
+
+const styles = (theme) => ({
+  progressSpinner: {
+    marginTop: '10px auto 0px auto',
+  },
+  progressContainer: {
+    margin: '0 auto',
+  }
+});
 
 class user extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        height: window.innerHeight,
-        profile: null,
-        snippetIdParam: null,
-        userHandle: null,
+      height: window.innerHeight,
+      profile: null,
+      snippetIdParam: null,
+      userHandle: null,
+      firsLoad: true,
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   handleScroll() {
-    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const windowHeight =
+      "innerHeight" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
     const body = document.body;
     const html = document.documentElement;
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    const docHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
     const windowBottom = windowHeight + window.pageYOffset;
     if (!this.props.data.lastVisible) {
-      if (!this.props.data.loading && 
-        windowBottom >= docHeight) {
-          this.props.getMoreUserSnippetsNav(null, this.props.match.params.handle);
-      } 
+      if (!this.props.data.loading && windowBottom >= docHeight) {
+        this.props.getMoreUserSnippetsNav(null, this.props.match.params.handle);
+      }
     } else {
-      if (!this.props.data.loading && 
+      if (
+        !this.props.data.loading &&
         windowBottom >= docHeight &&
-        this.props.data.lastVisible._fieldsProto.createdAt.stringValue !== this.props.data.lastUserSnippet._fieldsProto.createdAt.stringValue) {
-          this.props.getMoreUserSnippetsNav(this.props.data.lastVisible, this.props.match.params.handle);
-      } 
+        this.props.data.lastVisible._fieldsProto.createdAt.stringValue !==
+          this.props.data.lastUserSnippet._fieldsProto.createdAt.stringValue
+      ) {
+        this.setState({ firstLoad: false });
+        this.props.getMoreUserSnippetsNav(
+          this.props.data.lastVisible,
+          this.props.match.params.handle
+        );
+      }
     }
   }
 
@@ -72,35 +103,44 @@ class user extends Component {
 
   render() {
     const { snippets } = this.props.data;
-    const { loading } = this.props.data
+    const { loading } = this.props.data;
     const { snippetIdParam } = this.state;
     const {
       credentials: { handle },
       authenticated,
     } = this.props.user;
+    const { classes } = this.props;
     const isLoggedUser = handle === this.state.userHandle ? true : false;
 
-    const snippetsMarkup = loading ? (
-      <SnippetSkeleton />
-    ) : snippets === null ? (
-      <p>No snippets from this user</p>
-    ) : !snippetIdParam ? (
-      snippets.map((snippet) => (
-        <Snippet key={snippet.snippetId} snippet={snippet} />
-      ))
-    ) : (
-      snippets.map((snippet) => {
-        if (snippet.snippetId !== snippetIdParam)
-          return <p>That snippet doesn't exist!</p>;
-        else
-          return (
-            <Snippet key={snippet.snippetId} snippet={snippet} openDialog />
-          );
-      })
-    );
+    let circularProgress = !loading ? ( null ) : ( <CircularProgress size={30} className={classes.progressSpinner} /> );
+
+    let snippetsMap =
+      snippets === null ? (
+        <p>No snippets from this user</p>
+      ) : !snippetIdParam ? (
+        snippets.map((snippet) => (
+          <Snippet key={snippet.snippetId} snippet={snippet} />
+        ))
+      ) : (
+        snippets.map((snippet) => {
+          if (snippet.snippetId !== snippetIdParam)
+            return <p>That snippet doesn't exist!</p>;
+          else
+            return (
+              <Snippet key={snippet.snippetId} snippet={snippet} openDialog />
+            );
+        })
+      );
+
+    let snippetsMarkup;
+    if (this.state.firstLoad) {
+      snippetsMarkup = loading ? <SnippetSkeleton /> : snippetsMap;
+    } else {
+      snippetsMarkup = snippetsMap;
+    }
 
     return (
-      <Container maxWidth='md'>
+      <Container maxWidth="md">
         <Grid container spacing={1}>
           <Hidden smUp>
             <Grid item sm={4} xs={12}>
@@ -115,8 +155,16 @@ class user extends Component {
           </Hidden>
           <Grid item sm={8} xs={12}>
             {snippetsMarkup}
+            <Grid
+              container
+              direction='column'
+              alignItems='center'
+              justify='center'
+            >
+              {circularProgress}
+            </Grid>
           </Grid>
-          <Hidden only='xs'>
+          <Hidden only="xs">
             <Grid item sm={4} xs={12}>
               {this.state.profile === null ? (
                 <ProfileSkeleton />
@@ -143,4 +191,8 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { getUserData, getMoreUserSnippetsNav, clearSnippets })(user);
+export default connect(mapStateToProps, {
+  getUserData,
+  getMoreUserSnippetsNav,
+  clearSnippets,
+})(withStyles(styles)(user));
