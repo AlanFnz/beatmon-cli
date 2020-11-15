@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Box } from '@material-ui/core'
 // Components
 import Snippet from '../components/snippet/Snippet';
 import Profile from '../components/profile/Profile';
@@ -15,12 +18,22 @@ import { connect } from 'react-redux';
 // Actions
 import { getSnippets, getSnippetsNav, getSnippetsByGenre, clearSnippets } from '../redux/actions/dataActions';
 
+const styles = (theme) => ({
+  progressSpinner: {
+    marginTop: '10px auto 0px auto',
+  },
+  progressContainer: {
+    margin: '0 auto',
+  }
+});
+
 class home extends Component {
   constructor(props) {
     super(props);
     this.state = {
         height: window.innerHeight,
         genre: null,
+        firstLoad: true,
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
@@ -42,6 +55,7 @@ class home extends Component {
       if (!this.props.data.loading && 
         windowBottom >= docHeight &&
         this.props.data.lastVisible._fieldsProto.createdAt.stringValue !== this.props.data.lastSnippet._fieldsProto.createdAt.stringValue) {
+          this.setState({ firstLoad: false })
           method(this.props.data.lastVisible, this.state.genre);
       } 
     }
@@ -64,18 +78,37 @@ class home extends Component {
 
   render() {
     const { snippets, loading } = this.props.data;
-    let recentSnippetsMarkup = !loading ? (
-      snippets.map((snippet) => (
-        <Snippet snippet={snippet} key={snippet.snippetId} />
-      ))
-    ) : (
-      <SnippetSkeleton />
-    );
+    const { classes } = this.props;
+    let snippetsMap = snippets.map((snippet) => (
+      <Snippet snippet={snippet} key={snippet.snippetId} />
+    ));
+    let circularProgress = !loading ? ( null ) : ( <CircularProgress size={30} className={classes.progressSpinner} /> );
+    let recentSnippetsMarkup
+    if (this.state.firstLoad) {
+      recentSnippetsMarkup =
+        !loading ? (
+          snippetsMap
+        ) : (
+          <SnippetSkeleton />
+        );
+    } else {
+      recentSnippetsMarkup = snippetsMap;
+    }
+
     return (
       <Container maxWidth='md'>
         <Grid container spacing={1}>
           <Grid item sm={8} xs={12}>
             {recentSnippetsMarkup}
+            <Grid
+              container
+              direction='column'
+              alignItems='center'
+              justify='center'
+            >
+              {circularProgress}
+            </Grid>
+            
           </Grid>
           <Grid item sm={4} xs={12}>
             <Hidden xsDown>
@@ -98,4 +131,4 @@ const mapStateToProps = (state) => ({
   data: state.data,
 });
 
-export default connect(mapStateToProps, { getSnippets, getSnippetsNav, getSnippetsByGenre, clearSnippets })(home);
+export default connect(mapStateToProps, { getSnippets, getSnippetsNav, getSnippetsByGenre, clearSnippets })(withStyles(styles)(home));
