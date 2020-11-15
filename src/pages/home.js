@@ -6,7 +6,6 @@ import Hidden from '@material-ui/core/Hidden';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Box } from '@material-ui/core'
 // Components
 import Snippet from '../components/snippet/Snippet';
 import Profile from '../components/profile/Profile';
