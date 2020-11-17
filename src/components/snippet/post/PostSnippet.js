@@ -39,8 +39,8 @@ const styles = (theme) => ({
   },
   closeButton: {
     position: 'absolute',
-    left: '91%',
-    top: '6%',
+    right: '10px',
+    top: '10px',
   },
   cropButton: {
     marginTop: '5px',
