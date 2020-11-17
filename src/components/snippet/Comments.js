@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import DeleteComment from "./DeleteComment";
 // Material UI
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -13,13 +14,13 @@ const styles = (theme) => ({
   ...theme.spread,
   commentImage: {
     maxWidth: "100%",
-    height: 80,
+    height: 60,
     objectFit: "cover",
     borderRadius: "50%",
     marginLeft: 15,
   },
   commentData: {
-    marginLeft: 50,
+    marginLeft: 10,
   },
 });
 
@@ -29,11 +30,29 @@ class Comments extends Component {
   };
   render() {
     const { classes, comments } = this.props;
-    // const comments = this.state.comments;
+    const {
+      authenticated,
+      credentials: { handle },
+    } = this.props.user;
+
+    function searchHandle(userHandle, array) {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i].userHandle === userHandle) {
+          return true;
+        }
+      }
+    }
+
+    // const deleteButton =
+    //   authenticated && searchHandle(handle, comments) ? (
+    //     <DeleteComment />
+    //   ) : null;
+
     return (
       <Grid container>
         {comments.map((comment, index) => {
           const { body, createdAt, userImage, userHandle } = comment;
+          const snippetOwnerHandle = this.props.snippet.userHandle;
           return (
             <Fragment key={createdAt}>
               <Grid item sm={10}>
@@ -55,6 +74,9 @@ class Comments extends Component {
                       >
                         {userHandle}
                       </Typography>
+                      {authenticated && comment.commentId && searchHandle(handle, comments) ? (
+                        <DeleteComment commentId={comment.commentId} />
+                      ) : authenticated && snippetOwnerHandle === handle ? ( <DeleteComment commentId={comment.commentId} /> ) : null }
                       <Typography variant="body2" color="textSecondary">
                         {dayjs(createdAt).format("h:mm a, DD MMMM YYYY")}
                       </Typography>
@@ -81,6 +103,7 @@ Comments.propTypes = {
 
 const mapStateToProps = (state) => ({
   snippet: state.data.snippet,
+  user: state.user,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(Comments));

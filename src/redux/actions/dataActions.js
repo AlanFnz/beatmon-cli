@@ -15,6 +15,7 @@ import {
   PLAY_SNIPPET,
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
+  DELETE_COMMENT,
 } from "../types";
 import axios from "../../axios";
 
@@ -230,6 +231,19 @@ export const deleteSnippet = (snippetId) => (dispatch) => {
       dispatch({
         type: DELETE_SNIPPET,
         payload: snippetId,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+// Delete a comment
+export const deleteComment = (commentId) => (dispatch) => {
+  axios
+    .delete(`/snippet/comment/${commentId}`)
+    .then(() => {
+      dispatch({
+        type: DELETE_COMMENT,
+        payload: commentId,
       });
     })
     .catch((err) => console.log(err));

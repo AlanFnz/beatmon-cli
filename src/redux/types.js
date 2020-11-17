@@ -23,6 +23,7 @@ export const UNLIKE_SNIPPET = 'UNLIKE_SNIPPET';
 export const DELETE_SNIPPET = 'DELETE_SNIPPET';
 export const POST_SNIPPET = 'POST_SNIPPET';
 export const SUBMIT_COMMENT = 'SUBMIT_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 // Audio reducer types
 export const SET_PLAYING_SNIPPET = 'SET_PLAYING_SNIPPET';
 export const SET_CURRENT_TIME = 'SET_CURRENT_TIME';

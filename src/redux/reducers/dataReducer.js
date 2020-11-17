@@ -11,6 +11,7 @@ import {
   DELETE_SNIPPET,
   POST_SNIPPET,
   SUBMIT_COMMENT,
+  DELETE_COMMENT,
 } from "../types";
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   let index;
+  let commentCount;
   switch (action.type) {
     case LOADING_DATA:
       return {
@@ -108,7 +110,7 @@ export default function (state = initialState, action) {
       index = state.snippets.findIndex(
         (snippet) => snippet.snippetId === action.payload.snippetId
       );
-      const commentCount = state.snippet.commentCount + 1;
+      commentCount = state.snippet.commentCount + 1;
       state.snippets[index] = { ...state.snippets[index], commentCount };
       return {
         ...state,
@@ -118,6 +120,19 @@ export default function (state = initialState, action) {
           comments: [action.payload, ...state.snippet.comments],
         },
       };
+      case DELETE_COMMENT:
+        index = state.snippet.comments.findIndex(
+          (comment) => comment.commentId === action.payload
+        );
+        commentCount = state.snippet.commentCount - 1;
+        state.snippet.comments.splice(index, 1);
+        return {
+          ...state,
+          snippet: {
+            ...state.snippet,
+            commentCount,
+          },
+        };
     default:
       return state;
   }

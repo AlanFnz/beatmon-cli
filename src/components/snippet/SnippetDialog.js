@@ -1,32 +1,33 @@
-import React, { Fragment } from "react";
-import SnippetBase from "./SnippetBase";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CustomButton from "../../util/CustomButton";
-import LikeButton from "./LikeButton";
-import Comments from "./Comments";
-import CommentForm from "./CommentForm";
-import dayjs from "dayjs";
+import React, { Fragment } from 'react';
+import SnippetBase from './SnippetBase';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CustomButton from '../../util/CustomButton';
+import LikeButton from './LikeButton';
+import Comments from './Comments';
+import CommentForm from './CommentForm';
+import dayjs from 'dayjs';
 // Material UI
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 // Icons
-import CloseIcon from "@material-ui/icons/Close";
-import UnfoldMore from "@material-ui/icons/UnfoldMore";
-import ChatIcon from "@material-ui/icons/Chat";
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import CloseIcon from '@material-ui/icons/Close';
+import UnfoldMore from '@material-ui/icons/UnfoldMore';
+import ChatIcon from '@material-ui/icons/Chat';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 // Redux
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   getSnippet,
   clearErrors,
   playSnippetLogged,
   playSnippetNotLogged,
-} from "../../redux/actions/dataActions";
+} from '../../redux/actions/dataActions';
+import { setPlayingSnippet } from '../../redux/actions/audioActions';
 // Audio
 import Waves from './Waves';
 
@@ -34,37 +35,37 @@ import Waves from './Waves';
 const styles = (theme) => ({
   ...theme.spread,
   invisibleSeparator: {
-    border: "none",
+    border: 'none',
     margin: 4,
   },
   closeButton: {
-    position: "absolute",
-    left: "86%",
-    top: "1rem",
+    position: 'absolute',
+    left: '86%',
+    top: '1rem',
   },
   profileImage: {
-    display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-    maxWidth: "150px",
-    height: "150px",
-    borderRadius: "50%",
-    objectFit: "cover",
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxWidth: '150px',
+    height: '150px',
+    borderRadius: '50%',
+    objectFit: 'cover',
   },
   dialogContent: {
-    padding: "20px",
+    padding: '20px',
   },
   spinnerDiv: {
-    textAlign: "center",
-    marginTop: "40px",
-    marginBottom: "40px",
+    textAlign: 'center',
+    marginTop: '40px',
+    marginBottom: '40px',
   },
   snippetBody: {
     marginLeft: 5,
   },
   expandButton: {
-    position: "absolute",
-    right: "6px",
+    position: 'absolute',
+    right: '6px',
   },
   genre: {
     marginLeft: '6px',
@@ -77,8 +78,8 @@ const styles = (theme) => ({
 class SnippetDialog extends SnippetBase {
   state = {
     open: false,
-    oldPath: "",
-    newPath: "",
+    oldPath: '',
+    newPath: '',
   };
 
   componentDidMount() {
@@ -126,7 +127,6 @@ class SnippetDialog extends SnippetBase {
       },
       UI: { loading },
     } = this.props;
-
     const dialogMarkup = loading ? (
       <div className={classes.spinnerDiv}>
         <CircularProgress size={75} thickness={2} />
@@ -134,13 +134,13 @@ class SnippetDialog extends SnippetBase {
     ) : (
       <Grid container>
         <Grid item sm={4}>
-          <img src={userImage} alt="Profile" className={classes.profileImage} />
+          <img src={userImage} alt='Profile' className={classes.profileImage} />
         </Grid>
         <Grid item sm={8}>
           <Typography
             component={Link}
-            color="primary"
-            variant="h5"
+            color='primary'
+            variant='h5'
             to={`/users/${userHandle}`}
           >
             @{userHandle}
@@ -163,16 +163,16 @@ class SnippetDialog extends SnippetBase {
             </Typography>
           </div>
           <hr className={classes.invisibleSeparator} />
-          <Typography variant="body1">{body}</Typography>
-          <Waves audio={audio} onPlay={this.playSnippet}/>
+          <Typography variant='body1'>{body}</Typography>
+          <Waves audio={audio} onPlay={this.playSnippet} snippetId={snippetId}/>
           <LikeButton snippetId={snippetId} />
           <span>{likeCount}</span>
-          <CustomButton tip="Comments">
-            <ChatIcon color="primary" />
+          <CustomButton tip='Comments'>
+            <ChatIcon color='primary' />
           </CustomButton>
           <span>{commentCount}</span>
-          <CustomButton tip="Reproductions">
-            <PlayCircleFilledIcon color="primary" />
+          <CustomButton tip='Reproductions'>
+            <PlayCircleFilledIcon color='primary' />
           </CustomButton>
           <span>{playCount} </span>
         </Grid>
@@ -186,19 +186,19 @@ class SnippetDialog extends SnippetBase {
       <Fragment>
         <CustomButton
           onClick={this.handleOpen}
-          tip="Expand Snippet"
+          tip='Expand Snippet'
           tipClassName={classes.expandButton}
         >
-          <UnfoldMore color="primary" />
+          <UnfoldMore color='primary' />
         </CustomButton>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           fullWidth
-          maxWidth="sm"
+          maxWidth='sm'
         >
           <CustomButton
-            tip="Close"
+            tip='Close'
             onClick={this.handleClose}
             tipClassName={classes.closeButton}
           >
@@ -226,6 +226,7 @@ const mapStateToProps = (state) => ({
   snippet: state.data.snippet,
   UI: state.UI,
   user: state.user,
+  audio: state.audio,
 });
 
 const mapActionsToProps = {
@@ -233,6 +234,7 @@ const mapActionsToProps = {
   clearErrors,
   playSnippetLogged,
   playSnippetNotLogged,
+  setPlayingSnippet
 };
 
 export default connect(

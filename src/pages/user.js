@@ -39,7 +39,7 @@ class user extends Component {
       profile: null,
       snippetIdParam: null,
       userHandle: null,
-      firsLoad: true,
+      firstLoad: true,
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
@@ -124,7 +124,7 @@ class user extends Component {
       ) : (
         snippets.map((snippet) => {
           if (snippet.snippetId !== snippetIdParam)
-            return <p>That snippet doesn't exist!</p>;
+            return <Snippet key={snippet.snippetId} snippet={snippet} />
           else
             return (
               <Snippet key={snippet.snippetId} snippet={snippet} openDialog />
