@@ -1,22 +1,22 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
-import DeleteComment from "./DeleteComment";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import DeleteComment from './DeleteComment';
 // Material UI
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 // Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
 const styles = (theme) => ({
   ...theme.spread,
   commentImage: {
-    maxWidth: "100%",
+    maxWidth: '100%',
     height: 60,
-    objectFit: "cover",
-    borderRadius: "50%",
+    objectFit: 'cover',
+    borderRadius: '50%',
     marginLeft: 15,
   },
   commentData: {
@@ -60,7 +60,7 @@ class Comments extends Component {
                   <Grid item sm={2}>
                     <img
                       src={userImage}
-                      alt="comment"
+                      alt='comment'
                       className={classes.commentImage}
                     />
                   </Grid>
@@ -68,20 +68,20 @@ class Comments extends Component {
                     <div className={classes.commentData}>
                       <Typography
                         to={`/users/${userHandle}`}
-                        variant="h5"
+                        variant='h5'
                         component={Link}
-                        color="primary"
+                        color='primary'
                       >
                         {userHandle}
                       </Typography>
                       {authenticated && comment.commentId && searchHandle(handle, comments) ? (
                         <DeleteComment commentId={comment.commentId} />
                       ) : authenticated && snippetOwnerHandle === handle ? ( <DeleteComment commentId={comment.commentId} /> ) : null }
-                      <Typography variant="body2" color="textSecondary">
-                        {dayjs(createdAt).format("h:mm a, DD MMMM YYYY")}
+                      <Typography variant='body2' color='textSecondary'>
+                        {dayjs(createdAt).format('h:mm a, DD MMMM YYYY')}
                       </Typography>
                       <hr className={classes.invisibleSeparator} />
-                      <Typography variant="body1">{body}</Typography>
+                      <Typography variant='body1'>{body}</Typography>
                     </div>
                   </Grid>
                 </Grid>

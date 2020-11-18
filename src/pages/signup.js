@@ -60,16 +60,16 @@ class signup extends Component {
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
-          <img src={AppIcon} alt="App Icon" className={classes.image} />
-          <Typography variant="h2" className={classes.pageTitle}>
+          <img src={AppIcon} alt='App Icon' className={classes.image} />
+          <Typography variant='h2' className={classes.pageTitle}>
             Signup
           </Typography>
           <form noValidate onSubmit={this.handleSubmit}>
             <TextField
-              id="email"
-              name="email"
-              type="email"
-              label="Email"
+              id='email'
+              name='email'
+              type='email'
+              label='Email'
               className={classes.textField}
               helperText={errors.email}
               error={errors.email ? true : false}
@@ -78,10 +78,10 @@ class signup extends Component {
               fullWidth
             />
             <TextField
-              id="password"
-              name="password"
-              type="password"
-              label="Password"
+              id='password'
+              name='password'
+              type='password'
+              label='Password'
               className={classes.textField}
               helperText={errors.password}
               error={errors.password ? true : false}
@@ -90,10 +90,10 @@ class signup extends Component {
               fullWidth
             />
             <TextField
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              label="Confirm Password"
+              id='confirmPassword'
+              name='confirmPassword'
+              type='password'
+              label='Confirm Password'
               className={classes.textField}
               helperText={errors.confirmPassword}
               error={errors.confirmPassword ? true : false}
@@ -102,10 +102,10 @@ class signup extends Component {
               fullWidth
             />
             <TextField
-              id="handle"
-              name="handle"
-              type="handle"
-              label="User name"
+              id='handle'
+              name='handle'
+              type='handle'
+              label='User name'
               className={classes.textField}
               helperText={errors.handle}
               error={errors.handle ? true : false}
@@ -114,7 +114,7 @@ class signup extends Component {
               fullWidth
             />
             {errors.general && (
-              <Typography variant="body2" className={classes.customError}>
+              <Typography variant='body2' className={classes.customError}>
                 {errors.general}
               </Typography>
             )}
@@ -123,7 +123,7 @@ class signup extends Component {
                 <CircularProgress className={classes.progress} size={30} />
               </div>
             ) : (
-              <Button type="submit" className={classes.customButton}>
+              <Button type='submit' className={classes.customButton}>
                 Signup
               </Button>
             )}

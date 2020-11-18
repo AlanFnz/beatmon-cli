@@ -58,27 +58,27 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
     <Provider store={store}>
-      <div className="App">
+      <div className='App'>
         <Router>
           <Navbar />
-          <div className="container">
+          <div className='container'>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/nav/:genre" render={(props) => <Home {...props} key={uuidv4()}/>} />
+              <Route exact path='/' component={Home} />
+              <Route exact path='/nav/:genre' render={(props) => <Home {...props} key={uuidv4()}/>} />
               <AuthRoute
                 exact
-                path="/login"
+                path='/login'
                 component={Login}
               />
               <AuthRoute
                 exact
-                path="/signup"
+                path='/signup'
                 component={Signup}
               />
-              {/* <Route exact path="/users/:handle" component={User} /> */}
-              <Route exact path="/users/:handle" render={(props) => <User {...props} key={uuidv4()}/>} />
-              {/* <Route exact path="/users/:handle/snippet/:snippetId" component={User} /> */}
-              <Route exact path="/users/:handle/snippet/:snippetId" render={(props) => <User {...props} key={uuidv4()}/>} />
+              {/* <Route exact path='/users/:handle' component={User} /> */}
+              <Route exact path='/users/:handle' render={(props) => <User {...props} key={uuidv4()}/>} />
+              {/* <Route exact path='/users/:handle/snippet/:snippetId' component={User} /> */}
+              <Route exact path='/users/:handle/snippet/:snippetId' render={(props) => <User {...props} key={uuidv4()}/>} />
               
             </Switch>
           </div>

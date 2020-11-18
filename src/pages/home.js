@@ -98,6 +98,9 @@ class home extends Component {
       <Container maxWidth='md'>
         <Grid container spacing={1}>
           <Grid item sm={8} xs={12}>
+            <Hidden smUp>
+              <Filter />
+            </Hidden>
             {recentSnippetsMarkup}
             <Grid
               container

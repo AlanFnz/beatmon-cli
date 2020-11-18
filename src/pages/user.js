@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import axios from "../axios";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from '../axios';
 // Material UI
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Container from "@material-ui/core/Container";
+import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
+import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 // Components
-import Snippet from "../components/snippet/Snippet";
-import Profile from "../components/profile/Profile";
-import StaticProfile from "../components/profile/StaticProfile";
+import Snippet from '../components/snippet/Snippet';
+import Profile from '../components/profile/Profile';
+import StaticProfile from '../components/profile/StaticProfile';
 // Skeletons
-import SnippetSkeleton from "../util/SnippetSkeleton";
-import ProfileSkeleton from "../util/ProfileSkeleton";
+import SnippetSkeleton from '../util/SnippetSkeleton';
+import ProfileSkeleton from '../util/ProfileSkeleton';
 // Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
   getUserData,
   getMoreUserSnippetsNav,
   clearSnippets,
-} from "../redux/actions/dataActions";
+} from '../redux/actions/dataActions';
 
 const styles = (theme) => ({
   progressSpinner: {
@@ -46,7 +46,7 @@ class user extends Component {
 
   handleScroll() {
     const windowHeight =
-      "innerHeight" in window
+      'innerHeight' in window
         ? window.innerHeight
         : document.documentElement.offsetHeight;
     const body = document.body;
@@ -80,7 +80,7 @@ class user extends Component {
   }
 
   async componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
     await this.props.clearSnippets();
     const userHandle = this.props.match.params.handle;
     const snippetId = this.props.match.params.snippetId;
@@ -140,7 +140,7 @@ class user extends Component {
     }
 
     return (
-      <Container maxWidth="md">
+      <Container maxWidth='md'>
         <Grid container spacing={1}>
           <Hidden smUp>
             <Grid item sm={4} xs={12}>
@@ -164,7 +164,7 @@ class user extends Component {
               {circularProgress}
             </Grid>
           </Grid>
-          <Hidden only="xs">
+          <Hidden only='xs'>
             <Grid item sm={4} xs={12}>
               {this.state.profile === null ? (
                 <ProfileSkeleton />

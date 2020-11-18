@@ -1,25 +1,25 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 import EditDetails from './EditDetails';
 import CustomButton from '../../util/CustomButton';
 // Skeleton
 import ProfileSkeleton from '../../util/ProfileSkeleton';
 // Material UI
-import Button from "@material-ui/core/Button";
-import MuiLink from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
+import Button from '@material-ui/core/Button';
+import MuiLink from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
 // Icons
-import LocationOn from "@material-ui/icons/LocationOn";
-import LinkIcon from "@material-ui/icons/Link";
-import CalendarToday from "@material-ui/icons/CalendarToday";
+import LocationOn from '@material-ui/icons/LocationOn';
+import LinkIcon from '@material-ui/icons/Link';
+import CalendarToday from '@material-ui/icons/CalendarToday';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 // Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { logoutUser, uploadImage } from '../../redux/actions/userActions';
 
 const styles = (theme) => ({
@@ -64,76 +64,76 @@ class Profile extends Component {
       authenticated ? (
         <Paper className={classes.paper}>
           <div className={classes.profile}>
-            <div className="image-wrapper">
-              <img src={imageUrl} className="profile-image" alt="profile" />
+            <div className='image-wrapper'>
+              <img src={imageUrl} className='profile-image' alt='profile' />
               <input
-                type="file"
-                id="imageInput"
-                hidden="hidden"
-                accept="image/x-png,image/jpeg"
+                type='file'
+                id='imageInput'
+                hidden='hidden'
+                accept='image/x-png,image/jpeg'
                 onChange={this.handleImageChange}
               />
-              <CustomButton tip="Edit profile picture" onClick={this.handleEditPicture} btnClassName="button">
-                <EditIcon color="primary" />
+              <CustomButton tip='Edit profile picture' onClick={this.handleEditPicture} btnClassName='button'>
+                <EditIcon color='primary' />
               </CustomButton>
             </div>
             <hr />
-            <div className="profile-details">
+            <div className='profile-details'>
               <MuiLink
                 component={Link}
                 to={`/users/${handle}`}
-                color="primary"
-                variant="h6"
+                color='primary'
+                variant='h6'
               >
                 @{this.truncateString(handle, 20)}
               </MuiLink>
               <hr />
-              {bio && <Typography variant="body2" className={classes.bio}>{bio}</Typography>}
+              {bio && <Typography variant='body2' className={classes.bio}>{bio}</Typography>}
               <hr />
               {location && (
                 <Fragment>
-                  <LocationOn color="primary" /> <span>{this.truncateString(location, 29)}</span>
+                  <LocationOn color='primary' /> <span>{this.truncateString(location, 29)}</span>
                 </Fragment>
               )}
               <hr />
               {website && (
                 <Fragment>
-                  <LinkIcon color="primary" />
-                  <a href={website} target="_blank" rel="noopener noreferrer">
-                    {" "}
+                  <LinkIcon color='primary' />
+                  <a href={website} target='_blank' rel='noopener noreferrer'>
+                    {' '}
                     {this.truncateString(website, 26)}
                   </a>
                   <hr />
                 </Fragment>
               )}
-              <CalendarToday color="primary" />{" "}
-              <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
+              <CalendarToday color='primary' />{' '}
+              <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
             </div>
-            <CustomButton tip="Logout" onClick={this.handleLogout}>
-                <KeyboardReturn color="primary" />
+            <CustomButton tip='Logout' onClick={this.handleLogout}>
+                <KeyboardReturn color='primary' />
               </CustomButton>
             <EditDetails />
           </div>
         </Paper>
       ) : (
         <Paper className={classes.paper}>
-          <Typography variant="body2" align="center">
+          <Typography variant='body2' align='center'>
             No profile found, please login again
           </Typography>
           <div className={classes.buttons}>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               component={Link}
-              to="/login"
+              to='/login'
             >
               Login
             </Button>
             <Button
-              variant="contained"
-              color="secondary"
+              variant='contained'
+              color='secondary'
               component={Link}
-              to="/signup"
+              to='/signup'
             >
               Signup
             </Button>

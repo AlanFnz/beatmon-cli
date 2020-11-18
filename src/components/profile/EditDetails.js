@@ -1,23 +1,23 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CustomButton from "../../util/CustomButton";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CustomButton from '../../util/CustomButton';
 // Redux
-import { connect } from "react-redux";
-import { editUserDetails } from "../../redux/actions/userActions";
+import { connect } from 'react-redux';
+import { editUserDetails } from '../../redux/actions/userActions';
 // Material UI
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 // Icons
-import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from '@material-ui/icons/Edit';
 
 const styles = (theme) => ({
   button: {
-    float: "right",
+    float: 'right',
   },
   textField: {
     marginTop: 20,
@@ -26,17 +26,17 @@ const styles = (theme) => ({
 
 class EditDetails extends Component {
   state = {
-    bio: "",
-    website: "",
-    location: "",
+    bio: '',
+    website: '',
+    location: '',
     open: false,
   };
 
   mapUserDetailsToState = (credentials) => {
     this.setState({
-      bio: credentials.bio ? credentials.bio : "",
-      website: credentials.website ? credentials.website : "",
-      location: credentials.location ? credentials.location : "",
+      bio: credentials.bio ? credentials.bio : '',
+      website: credentials.website ? credentials.website : '',
+      location: credentials.location ? credentials.location : '',
     });
   };
 
@@ -75,27 +75,27 @@ class EditDetails extends Component {
     return (
       <Fragment>
         <CustomButton
-          tip="Edit details"
+          tip='Edit details'
           onClick={this.handleOpen}
           btnClassName={classes.button}
         >
-          <EditIcon color="primary" />
+          <EditIcon color='primary' />
         </CustomButton>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
-          maxWidth={"sm"}
+          maxWidth={'sm'}
         >
           <DialogTitle>Edit your details</DialogTitle>
           <DialogContent>
             <form>
               <TextField
-                name="bio"
-                type="text"
-                label="Bio"
+                name='bio'
+                type='text'
+                label='Bio'
                 multiline
-                rows="3"
-                placeholder="A short bio about yourself"
+                rows='3'
+                placeholder='A short bio about yourself'
                 className={classes.textField}
                 value={this.state.bio}
                 onChange={this.handleChange}
@@ -103,20 +103,20 @@ class EditDetails extends Component {
                 inputProps={{ maxLength: 150 }}
               />
               <TextField
-                name="website"
-                type="text"
-                label="Website"
-                placeholder="Your personal/professional website"
+                name='website'
+                type='text'
+                label='Website'
+                placeholder='Your personal/professional website'
                 className={classes.textField}
                 value={this.state.website}
                 onChange={this.handleChange}
                 fullWidth
               />
               <TextField
-                name="location"
-                type="text"
-                label="Location"
-                placeholder="Your location"
+                name='location'
+                type='text'
+                label='Location'
+                placeholder='Your location'
                 className={classes.textField}
                 value={this.state.location}
                 onChange={this.handleChange}
@@ -125,10 +125,10 @@ class EditDetails extends Component {
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleSubmit} color="secondary">
+            <Button onClick={this.handleSubmit} color='secondary'>
               Save
             </Button>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.handleClose} color='primary'>
               Cancel
             </Button>
           </DialogActions>

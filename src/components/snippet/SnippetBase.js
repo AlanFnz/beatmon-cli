@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component } from 'react';
 
 // Don't forget to connect the component
 class SnippetBase extends Component {

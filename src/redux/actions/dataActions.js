@@ -16,14 +16,14 @@ import {
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
   DELETE_COMMENT,
-} from "../types";
-import axios from "../../axios";
+} from '../types';
+import axios from '../../axios';
 
 // Get all snippets
 export const getSnippets = () => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get("/snippets")
+    .get('/snippets')
     .then((res) => {
       dispatch({
         type: SET_SNIPPETS,
@@ -161,7 +161,7 @@ export const playSnippetNotLogged = (snippetId) => (dispatch) => {
 export const postSnippet = (newSnippet) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post("/snippet", newSnippet)
+    .post('/snippet', newSnippet)
     .then((res) => {
       dispatch({
         type: POST_SNIPPET,

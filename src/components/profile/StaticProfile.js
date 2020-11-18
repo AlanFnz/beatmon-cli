@@ -8,9 +8,9 @@ import MuiLink from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 // Icons
-import LocationOn from "@material-ui/icons/LocationOn";
-import LinkIcon from "@material-ui/icons/Link";
-import CalendarToday from "@material-ui/icons/CalendarToday";
+import LocationOn from '@material-ui/icons/LocationOn';
+import LinkIcon from '@material-ui/icons/Link';
+import CalendarToday from '@material-ui/icons/CalendarToday';
 
 const styles = (theme) => ({
   ...theme.spread,
@@ -29,40 +29,40 @@ const StaticProfile = props => {
     return (
         <Paper className={classes.paper}>
           <div className={classes.profile}>
-            <div className="image-wrapper">
-              <img src={imageUrl} className="profile-image" alt="profile" />
+            <div className='image-wrapper'>
+              <img src={imageUrl} className='profile-image' alt='profile' />
             </div>
             <hr />
-            <div className="profile-details">
+            <div className='profile-details'>
               <MuiLink
                 component={Link}
                 to={`/users/${handle}`}
-                color="primary"
-                variant="h6"
+                color='primary'
+                variant='h6'
               >
                 @{truncateString(handle, 20)}
               </MuiLink>
               <hr />
-              {bio && <Typography variant="body2" className={classes.bio}>{bio}</Typography>}
+              {bio && <Typography variant='body2' className={classes.bio}>{bio}</Typography>}
               <hr />
               {location && (
                 <Fragment>
-                  <LocationOn color="primary" /> <span>{location}</span>
+                  <LocationOn color='primary' /> <span>{location}</span>
                 </Fragment>
               )}
               <hr />
               {website && (
                 <Fragment>
-                  <LinkIcon color="primary" />
-                  <a href={website} target="_blank" rel="noopener noreferrer">
-                    {" "}
+                  <LinkIcon color='primary' />
+                  <a href={website} target='_blank' rel='noopener noreferrer'>
+                    {' '}
                     {truncateString(website, 26)}
                   </a>
                   <hr />
                 </Fragment>
               )}
-              <CalendarToday color="primary" />{" "}
-              <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
+              <CalendarToday color='primary' />{' '}
+              <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
             </div>
           </div>
         </Paper>

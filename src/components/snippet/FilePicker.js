@@ -1,5 +1,4 @@
-import React, { PureComponent } from "react";
-// import PropTypes from 'prop-types'
+import React, { PureComponent } from 'react';
 
 export default class FilePicker extends PureComponent {
   constructor() {
@@ -21,11 +20,11 @@ export default class FilePicker extends PureComponent {
       <label>
         {this.props.children}
         <input
-          type="file"
+          type='file'
           key={this.state.key}
-          ref="file"
+          ref='file'
           onChange={this.handleChange}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           accept='audio/mp3,audio/wav'
         />
       </label>
@@ -35,9 +34,4 @@ export default class FilePicker extends PureComponent {
   static defaultProps = {
     onChange() {},
   };
-
-  // static propTypes = {
-  //   onChange: PropTypes.func,
-  //   children: PropTypes.element,
-  // }
 }

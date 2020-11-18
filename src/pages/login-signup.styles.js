@@ -1,16 +1,16 @@
 export const styles = {
   form: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 
   hidden: {
-    visibility: "hidden",
+    visibility: 'hidden',
   },
 
   image: {
     padding: 15,
     width: 60,
-    margin: "10px auto 0 auto",
+    margin: '10px auto 0 auto',
   },
 
   pageTitle: {
@@ -19,12 +19,12 @@ export const styles = {
   },
 
   textField: {
-    margin: "20px auto",
+    margin: '20px auto',
   },
 
   customError: {
-    color: "red",
-    fontSize: "0.8rem",
+    color: 'red',
+    fontSize: '0.8rem',
     marginTop: 15,
   },
 
@@ -33,38 +33,38 @@ export const styles = {
   },
   
   progressContainer: {
-    marginTop: "15px",
+    marginTop: '15px',
   },
 
   customButton: {
-    background: "none",
-    color: "inherit",
-    border: "none",
+    background: 'none',
+    color: 'inherit',
+    border: 'none',
     padding: 0,
-    font: "inherit",
-    cursor: "pointer",
-    outline: "inherit",
+    font: 'inherit',
+    cursor: 'pointer',
+    outline: 'inherit',
     margin: 20,
     borderRadius: 0,
-    borderBottom: "1px solid #fcbb6d",
-    "&:visited": {
-      fontSize: "1.6rem",
-      color: "#fcbb6d",
-      display: "inline-block",
-      textDecoration: "none",
-      borderBottom: "1px solid #fcbb6d",
+    borderBottom: '1px solid #fcbb6d',
+    '&:visited': {
+      fontSize: '1.6rem',
+      color: '#fcbb6d',
+      display: 'inline-block',
+      textDecoration: 'none',
+      borderBottom: '1px solid #fcbb6d',
       padding: 3,
-      transition: "all .2s",
+      transition: 'all .2s',
     },
-    "&:hover": {
-      backgroundColor: "#fcbb6d",
-      color: "#fff",
-      boxShadow: "0 .8rem 1.5rem rgba(#000, .1)",
-      transform: "translateY(-2px)",
+    '&:hover': {
+      backgroundColor: '#fcbb6d',
+      color: '#fff',
+      boxShadow: '0 .8rem 1.5rem rgba(#000, .1)',
+      transform: 'translateY(-2px)',
     },
-    "&:active": {
-      boxShadow: "0 .5rem 1rem rgba(#000, .15)",
-      transform: "translateY(0)",
+    '&:active': {
+      boxShadow: '0 .5rem 1rem rgba(#000, .15)',
+      transform: 'translateY(0)',
     },
   },
 };

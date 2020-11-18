@@ -12,7 +12,7 @@ import {
   POST_SNIPPET,
   SUBMIT_COMMENT,
   DELETE_COMMENT,
-} from "../types";
+} from '../types';
 
 const initialState = {
   snippets: [],

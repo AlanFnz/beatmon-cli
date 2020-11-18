@@ -44,17 +44,17 @@ class DeleteSnippet extends Component {
         return (
             <Fragment>
                 <CustomButton 
-                    tip="Delete snippet"
+                    tip='Delete snippet'
                     onClick={this.handleOpen}
                     btnClassName={classes.deleteButton}
                 >
-                    <DeleteOutline color="secondary" />     
+                    <DeleteOutline color='secondary' />     
                 </CustomButton>
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
                     fullWidth
-                    maxWidth="sm"
+                    maxWidth='sm'
                     >
                         <DialogTitle>
                             Are you sure you want to delete this snippet?
@@ -63,10 +63,10 @@ class DeleteSnippet extends Component {
                             This can't be undone
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
+                            <Button onClick={this.handleClose} color='primary'>
                                 Cancel
                             </Button>
-                            <Button onClick={this.deleteSnippet} color="secondary">
+                            <Button onClick={this.deleteSnippet} color='secondary'>
                                 Delete
                             </Button>
                         </DialogActions>
