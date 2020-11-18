@@ -274,7 +274,7 @@ class PostSnippet extends Component {
                 component='span'
                 className={classes.selectButton}
               >
-                Select audio
+                Select mp3/wav
               </Button>
             </FilePicker>
           ) 

@@ -13,11 +13,18 @@ import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 
 const styles = (theme) => ({
-  ...theme.spread
+  ...theme.spread,
+  bio: { 
+    overflowWrap: 'break-word',
+  }
 });
 
 const StaticProfile = props => {
     const { classes, profile: { handle, createdAt, imageUrl, bio, website, location }} = props;
+
+    const truncateString = (string, number) => {
+      return (string.length > number) ? `${string.substring(0, number-1)}...` : string;
+    };
 
     return (
         <Paper className={classes.paper}>
@@ -31,12 +38,12 @@ const StaticProfile = props => {
                 component={Link}
                 to={`/users/${handle}`}
                 color="primary"
-                variant="h5"
+                variant="h6"
               >
-                @{handle}
+                @{truncateString(handle, 20)}
               </MuiLink>
               <hr />
-              {bio && <Typography variant="body2">{bio}</Typography>}
+              {bio && <Typography variant="body2" className={classes.bio}>{bio}</Typography>}
               <hr />
               {location && (
                 <Fragment>
@@ -49,7 +56,7 @@ const StaticProfile = props => {
                   <LinkIcon color="primary" />
                   <a href={website} target="_blank" rel="noopener noreferrer">
                     {" "}
-                    {website}
+                    {truncateString(website, 26)}
                   </a>
                   <hr />
                 </Fragment>

@@ -23,7 +23,10 @@ import { connect } from "react-redux";
 import { logoutUser, uploadImage } from '../../redux/actions/userActions';
 
 const styles = (theme) => ({
-  ...theme.spread
+  ...theme.spread,
+  bio: { 
+    overflowWrap: 'break-word',
+  }
 });
 
 class Profile extends Component {
@@ -41,6 +44,10 @@ class Profile extends Component {
 
   handleLogout = () => {
     this.props.logoutUser();
+  };
+
+  truncateString = (string, number) => {
+    return (string.length > number) ? `${string.substring(0, number-1)}...` : string;
   };
 
   render() {
@@ -63,6 +70,7 @@ class Profile extends Component {
                 type="file"
                 id="imageInput"
                 hidden="hidden"
+                accept="image/x-png,image/jpeg"
                 onChange={this.handleImageChange}
               />
               <CustomButton tip="Edit profile picture" onClick={this.handleEditPicture} btnClassName="button">
@@ -75,16 +83,16 @@ class Profile extends Component {
                 component={Link}
                 to={`/users/${handle}`}
                 color="primary"
-                variant="h5"
+                variant="h6"
               >
-                @{handle}
+                @{this.truncateString(handle, 20)}
               </MuiLink>
               <hr />
-              {bio && <Typography variant="body2">{bio}</Typography>}
+              {bio && <Typography variant="body2" className={classes.bio}>{bio}</Typography>}
               <hr />
               {location && (
                 <Fragment>
-                  <LocationOn color="primary" /> <span>{location}</span>
+                  <LocationOn color="primary" /> <span>{this.truncateString(location, 29)}</span>
                 </Fragment>
               )}
               <hr />
@@ -93,7 +101,7 @@ class Profile extends Component {
                   <LinkIcon color="primary" />
                   <a href={website} target="_blank" rel="noopener noreferrer">
                     {" "}
-                    {website}
+                    {this.truncateString(website, 26)}
                   </a>
                   <hr />
                 </Fragment>
