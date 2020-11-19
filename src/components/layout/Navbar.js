@@ -1,58 +1,58 @@
-import React, { Component, Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import CustomButton from "../../util/CustomButton";
-import PostSnippet from "../snippet/post/PostSnippet";
-import Notifications from "./Notifications";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React, { Component, Fragment } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import CustomButton from '../../util/CustomButton';
+import PostSnippet from '../snippet/post/PostSnippet';
+import Notifications from './Notifications';
+import withStyles from '@material-ui/core/styles/withStyles';
 // Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 // Material UI
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 // Icons
-import HomeIcon from "@material-ui/icons/Home";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import HomeIcon from '@material-ui/icons/Home';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const styles = (theme) => ({
   ...theme.spread,
   navbarStyles: {
-    WebkitBoxPack: "justify",
-    justifyContent: "space-between",
-    whiteSpace: "nowrap",
-    minHeight: "64px",
+    WebkitBoxPack: 'justify',
+    justifyContent: 'space-between',
+    whiteSpace: 'nowrap',
+    minHeight: '64px',
   },
   buttonLogin: {
-    [theme.breakpoints.up("xs")]: {
-      minWidth: "40vw",
+    [theme.breakpoints.up('xs')]: {
+      minWidth: '40vw',
     },
-    [theme.breakpoints.up("sm")]: {
-      minWidth: "250px",
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '250px',
     },
-    border: "1px solid #fcbb6d",
-    maxWidth: "250px",
-    color: "#fcbb6d",
-    margin: "0 5px 0 5px",
-    borderRadius: "8px",
+    border: '1px solid #fcbb6d',
+    maxWidth: '250px',
+    color: '#fcbb6d',
+    margin: '0 5px 0 5px',
+    borderRadius: '8px',
   },
   buttonSignup: {
-    [theme.breakpoints.up("xs")]: {
-      minWidth: "40vw",
+    [theme.breakpoints.up('xs')]: {
+      minWidth: '40vw',
     },
-    [theme.breakpoints.up("sm")]: {
-      minWidth: "250px",
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '250px',
     },
-    maxWidth: "250px",
-    backgroundColor: "#fcbb6d",
-    margin: "0 5px 0 5px",
-    borderRadius: "8px",
+    maxWidth: '250px',
+    backgroundColor: '#fcbb6d',
+    margin: '0 5px 0 5px',
+    borderRadius: '8px',
   },
   loginSignUpMessage: {
-    fontSize: "1.2rem",
+    fontSize: '1.2rem',
   },
   hereLink: {
-    color: "#fcbb6d",
+    color: '#fcbb6d',
   },
 });
 
@@ -69,17 +69,17 @@ class Navbar extends Component {
     return (
       <AppBar elevation={1}>
         <Toolbar className={`nav-container ${classes.navbarStyles}`}>
-          {location.pathname === "/login" ? (
+          {location.pathname === '/login' ? (
             <div className={classes.loginSignUpMessage}>
-              Don't have an account? sign up{" "}
-              <Link className={classes.hereLink} to="/signup">
+              Don't have an account? sign up{' '}
+              <Link className={classes.hereLink} to='/signup'>
                 here
               </Link>
             </div>
-          ) : location.pathname === "/signup" ? (
+          ) : location.pathname === '/signup' ? (
             <div className={classes.loginSignUpMessage}>
-              Already have an account? login{" "}
-              <Link className={classes.hereLink} to="/login">
+              Already have an account? login{' '}
+              <Link className={classes.hereLink} to='/login'>
                 here
               </Link>
             </div>
@@ -87,12 +87,12 @@ class Navbar extends Component {
             <Fragment>
               <PostSnippet />
               <Link to={`/users/${handle}`}>
-                <CustomButton tip="Profile">
+                <CustomButton tip='Profile'>
                   <AccountCircleIcon />
                 </CustomButton>
               </Link>
-              <Link to="/">
-                <CustomButton tip="Home">
+              <Link to='/'>
+                <CustomButton tip='Home'>
                   <HomeIcon />
                 </CustomButton>
               </Link>
@@ -102,17 +102,17 @@ class Navbar extends Component {
             <Fragment>
               <Button
                 className={classes.buttonLogin}
-                color="inherit"
+                color='inherit'
                 component={Link}
-                to="/login"
+                to='/login'
               >
                 Login
               </Button>
               <Button
                 className={classes.buttonSignup}
-                color="inherit"
+                color='inherit'
                 component={Link}
-                to="/signup"
+                to='/signup'
               >
                 Signup
               </Button>

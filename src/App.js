@@ -15,6 +15,7 @@ import { SET_AUTHENTICATED, SET_FINGERPRINT } from './redux/types';
 import { logoutUser, getUserData } from './redux/actions/userActions';
 //Components
 import Navbar from './components/layout/Navbar';
+import Bottombar from './components/layout/Bottombar';
 import AuthRoute from './util/AuthRoute';
 // Pages
 import Home from './pages/home';
@@ -82,6 +83,7 @@ function App() {
               
             </Switch>
           </div>
+          <Bottombar />
         </Router>
       </div>
       </Provider>
