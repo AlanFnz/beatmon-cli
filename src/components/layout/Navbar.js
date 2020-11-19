@@ -30,9 +30,9 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       minWidth: '250px',
     },
-    border: '1px solid #fcbb6d',
+    border: '1px solid #ffad1f',
     maxWidth: '250px',
-    color: '#fcbb6d',
+    color: '#ffad1f',
     margin: '0 5px 0 5px',
     borderRadius: '8px',
   },
@@ -44,7 +44,7 @@ const styles = (theme) => ({
       minWidth: '250px',
     },
     maxWidth: '250px',
-    backgroundColor: '#fcbb6d',
+    backgroundColor: '#ffad1f',
     margin: '0 5px 0 5px',
     borderRadius: '8px',
   },
@@ -52,7 +52,7 @@ const styles = (theme) => ({
     fontSize: '1.2rem',
   },
   hereLink: {
-    color: '#fcbb6d',
+    color: '#ffad1f',
   },
 });
 

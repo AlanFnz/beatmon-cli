@@ -63,7 +63,7 @@ const styles = (theme) => ({
   genre: {
     marginLeft: '6px',
     display: 'inline',
-    color: '#fcbb6d',
+    color: '#ffad1f',
     fontSize: '13px',
     fontWeight: '700',
   },

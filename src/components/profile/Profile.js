@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import EditDetails from './EditDetails';
 import CustomButton from '../../util/CustomButton';
+import BeatmonLogo from '../../images/beatmon-logo.png';
 // Skeleton
 import ProfileSkeleton from '../../util/ProfileSkeleton';
 // Material UI
@@ -26,7 +27,17 @@ const styles = (theme) => ({
   ...theme.spread,
   bio: { 
     overflowWrap: 'break-word',
-  }
+  },
+  logo: {
+    maxWidth: '200px',
+    display: 'block',
+    transform: 'translateY(-15%)',
+    margin: '10px auto 0px auto'
+  },
+  description: {
+    margin: '0px auto 5px auto',
+    display: 'block',
+  },
 });
 
 class Profile extends Component {
@@ -117,8 +128,9 @@ class Profile extends Component {
         </Paper>
       ) : (
         <Paper className={classes.paper}>
-          <Typography variant='body2' align='center'>
-            No profile found, please login again
+            <img src={BeatmonLogo} alt="Beatmon" className={classes.logo} />
+          <Typography variant='subtitle2' align='center' className={classes.description}>
+            Beatmon is a social networking service designed for music producers. A place where you can share short snippets of your stuff, give and receive feedback from other producers. Feel free to join us and start improving!.
           </Typography>
           <div className={classes.buttons}>
             <Button

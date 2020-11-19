@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import axios from './axios';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import themeFile from './util/theme';
 import jwtDecode from 'jwt-decode';
 import { v4 as uuidv4 } from 'uuid';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+// Material UI
+import Hidden from '@material-ui/core/Hidden';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 // Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -83,7 +85,9 @@ function App() {
               
             </Switch>
           </div>
-          <Bottombar />
+          <Hidden smUp> 
+            <Bottombar />
+          </Hidden>
         </Router>
       </div>
       </Provider>

@@ -53,11 +53,11 @@ class login extends Component {
     } = this.props;
     const { errors } = this.state;
     return (
-      <Grid container className={classes.form}>
+      <Grid container className={`${classes.form} ${classes.margin}`}>
         <Grid item sm />
         <Grid item sm>
           <img src={AppIcon} alt='App Icon' className={classes.image} />
-          <Typography variant='h2' className={classes.pageTitle}>
+          <Typography variant='h3' className={classes.pageTitle}>
             Welcome!
           </Typography>
           <form noValidate onSubmit={this.handleSubmit}>

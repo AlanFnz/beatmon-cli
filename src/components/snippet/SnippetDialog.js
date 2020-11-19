@@ -72,7 +72,7 @@ const styles = (theme) => ({
   genre: {
     marginLeft: '6px',
     display: 'inline',
-    color: '#fcbb6d',
+    color: '#ffad1f',
     fontWeight: '700',
   },
   gridContainer: {
@@ -224,6 +224,7 @@ class SnippetDialog extends SnippetBase {
           open={this.state.open}
           onClose={this.handleClose}
           fullWidth
+          //TODO: Review this prop
           maxWidth='false'
           PaperProps={{
             style: {

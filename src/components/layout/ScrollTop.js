@@ -8,8 +8,11 @@ const styles = (theme) => ({
   ...theme.spread,
   toTop: {
     position: 'fixed',
-    bottom: theme.spacing(8),
-    [theme.breakpoints.up('md')]: {
+    bottom: theme.spacing(9),
+    [theme.breakpoints.up('lg')]: {
+      right: '40%',
+    },
+    [theme.breakpoints.down('md')]: {
       right: '30%',
     },
     [theme.breakpoints.down('sm')]: {

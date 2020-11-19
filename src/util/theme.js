@@ -2,13 +2,13 @@ export default {
     palette: {
       primary: {
         light: '#33c9dc',
-        main: '#373737',
+        main: '#15202b',
         dark: '#008394',
         constrastText: '#ffffff'
       },
       secondary: {
         light: '#ff6333',
-        main: '#ff3d00',
+        main: '#ffad1f',
         dark: '#b22a00',
         contrastText: '#ffffff'
       }
@@ -85,7 +85,7 @@ export default {
             verticalAlign: "middle",
           },
           "& a": {
-            color: '#fcbb6d',
+            color: '#ffad1f',
           },
         },
         "& hr": {

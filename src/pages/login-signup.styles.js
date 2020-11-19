@@ -1,4 +1,4 @@
-export const styles = {
+export const styles = (theme) => ({
   form: {
     textAlign: 'center',
   },
@@ -11,6 +11,12 @@ export const styles = {
     padding: 15,
     width: 60,
     margin: '10px auto 0 auto',
+  },
+
+  margin: {
+    [theme.breakpoints.up('xs')]: {
+      marginBottom: '80px',
+    },
   },
 
   pageTitle: {
@@ -31,7 +37,7 @@ export const styles = {
   progress: {
     width: 20,
   },
-  
+
   progressContainer: {
     marginTop: '15px',
   },
@@ -67,4 +73,4 @@ export const styles = {
       transform: 'translateY(0)',
     },
   },
-};
+});
