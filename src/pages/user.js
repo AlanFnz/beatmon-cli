@@ -7,10 +7,13 @@ import Hidden from '@material-ui/core/Hidden';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 // Components
 import Snippet from '../components/snippet/Snippet';
 import Profile from '../components/profile/Profile';
 import StaticProfile from '../components/profile/StaticProfile';
+import ScrollTop from '../components/layout/ScrollTop';
 // Skeletons
 import SnippetSkeleton from '../util/SnippetSkeleton';
 import ProfileSkeleton from '../util/ProfileSkeleton';
@@ -43,6 +46,14 @@ class user extends Component {
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
+
+  handleClickTop = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
+
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   handleScroll() {
     const windowHeight =
@@ -141,6 +152,7 @@ class user extends Component {
 
     return (
       <Container maxWidth='md'>
+        <div id='back-to-top-anchor' ></div>
         <Grid container spacing={1}>
           <Hidden smUp>
             <Grid item sm={4} xs={12}>
@@ -162,6 +174,15 @@ class user extends Component {
               justify='center'
             >
               {circularProgress}
+              <ScrollTop window={window} handleClickTop={this.handleClickTop}>
+                <Fab
+                  color="secondary"
+                  size="small"
+                  aria-label="scroll back to top"
+                >
+                  <KeyboardArrowUpIcon />
+                </Fab>
+              </ScrollTop >
             </Grid>
           </Grid>
           <Hidden only='xs'>
