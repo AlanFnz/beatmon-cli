@@ -136,6 +136,7 @@ class PostSnippet extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    if (!this.state.genre) { return this.props.setError({ error: 'Please, select a genre' });}
     this.props.setLoading();
 
     // Setting file name
@@ -174,6 +175,8 @@ class PostSnippet extends Component {
 
   handleGenreSelection = (event) => {
     this.setState({ genre: event.target.value })
+    this.setState({ errors: {} })
+    return this.props.clearErrors();
   };
 
   cutAudioFile = async (event) => {
