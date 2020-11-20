@@ -93,9 +93,9 @@ class home extends Component {
     await this.props.clearSnippets();
     this.setState({ genre: this.props.match.params.genre });
     if (!this.state.genre) {
-      this.props.getSnippetsNav(this.props.data.lastVisible);
+      await this.props.getSnippetsNav(this.props.data.lastVisible);
     } else {
-      this.props.getSnippetsByGenre(
+      await this.props.getSnippetsByGenre(
         this.props.data.lastVisible,
         this.state.genre
       );

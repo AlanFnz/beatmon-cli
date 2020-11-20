@@ -20,7 +20,7 @@ const styles = (theme) => ({
     marginLeft: 15,
   },
   commentData: {
-    marginLeft: 10,
+    marginLeft: 25,
   },
 });
 

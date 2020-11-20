@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import DialogContent from '@material-ui/core/DialogContent';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 
 export default ({ handleGenreSelection, submitButton, errors }) => (
@@ -41,7 +40,6 @@ export default ({ handleGenreSelection, submitButton, errors }) => (
             </Grid>
           </Grid>
         </RadioGroup>
-        <FormHelperText>ke?</FormHelperText>
       </FormControl>
     </form>
     {submitButton}

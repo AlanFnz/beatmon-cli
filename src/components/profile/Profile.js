@@ -25,14 +25,14 @@ import { logoutUser, uploadImage } from '../../redux/actions/userActions';
 
 const styles = (theme) => ({
   ...theme.spread,
-  bio: { 
+  bio: {
     overflowWrap: 'break-word',
   },
   logo: {
     maxWidth: '200px',
     display: 'block',
     transform: 'translateY(-15%)',
-    margin: '10px auto 0px auto'
+    margin: '10px auto 0px auto',
   },
   description: {
     margin: '0px auto 5px auto',
@@ -58,7 +58,9 @@ class Profile extends Component {
   };
 
   truncateString = (string, number) => {
-    return (string.length > number) ? `${string.substring(0, number-1)}...` : string;
+    return string.length > number
+      ? `${string.substring(0, number - 1)}...`
+      : string;
   };
 
   render() {
@@ -84,7 +86,11 @@ class Profile extends Component {
                 accept='image/x-png,image/jpeg'
                 onChange={this.handleImageChange}
               />
-              <CustomButton tip='Edit profile picture' onClick={this.handleEditPicture} btnClassName='button'>
+              <CustomButton
+                tip='Edit profile picture'
+                onClick={this.handleEditPicture}
+                btnClassName='button'
+              >
                 <EditIcon color='primary' />
               </CustomButton>
             </div>
@@ -99,11 +105,16 @@ class Profile extends Component {
                 @{this.truncateString(handle, 20)}
               </MuiLink>
               <hr />
-              {bio && <Typography variant='body2' className={classes.bio}>{bio}</Typography>}
+              {bio && (
+                <Typography variant='body2' className={classes.bio}>
+                  {bio}
+                </Typography>
+              )}
               <hr />
               {location && (
                 <Fragment>
-                  <LocationOn color='primary' /> <span>{this.truncateString(location, 29)}</span>
+                  <LocationOn color='primary' />{' '}
+                  <span>{this.truncateString(location, 29)}</span>
                 </Fragment>
               )}
               <hr />
@@ -121,16 +132,25 @@ class Profile extends Component {
               <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
             </div>
             <CustomButton tip='Logout' onClick={this.handleLogout}>
-                <KeyboardReturn color='primary' />
-              </CustomButton>
+              <KeyboardReturn color='primary' />
+            </CustomButton>
             <EditDetails />
           </div>
         </Paper>
       ) : (
         <Paper className={classes.paper}>
-            <img src={BeatmonLogo} alt="Beatmon" className={classes.logo} />
-          <Typography variant='subtitle2' align='center' className={classes.description}>
-            Beatmon is a social networking service designed for music producers. A place where you can share short snippets of your stuff, give and receive feedback from other producers. Feel free to join us and start improving!.
+          <Link to='/'>
+            <img src={BeatmonLogo} alt='Beatmon' className={classes.logo} />
+          </Link>
+          <Typography
+            variant='subtitle2'
+            align='center'
+            className={classes.description}
+          >
+            Beatmon is a social networking service designed for music producers.
+            A place where you can share short snippets of your stuff, give and
+            receive feedback from other producers. Feel free to join us and
+            start improving!.
           </Typography>
           <div className={classes.buttons}>
             <Button
@@ -173,4 +193,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = { logoutUser, uploadImage };
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Profile));
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(Profile));

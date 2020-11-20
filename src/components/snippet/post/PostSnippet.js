@@ -18,7 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 // Redux
 import { connect } from 'react-redux';
-import { postSnippet, setError, clearErrors } from '../../../redux/actions/dataActions';
+import { postSnippet, setError, clearErrors, setLoading } from '../../../redux/actions/dataActions';
 // Audio
 import WavesUpload from '../WavesUpload';
 import { isAudio, readBlobURL } from '../../../audioUtils/utils';
@@ -36,6 +36,10 @@ const styles = (theme) => ({
   progressSpinner: {
     position: 'absolute',
     marginTop: '90px',
+  },
+  progressSpinnerSubmit: {
+    position: 'absolute',
+    // marginTop: '0px',
   },
   closeButton: {
     position: 'absolute',
@@ -132,6 +136,7 @@ class PostSnippet extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    this.props.setLoading();
 
     // Setting file name
     const randomId = uuidv4();
@@ -289,13 +294,13 @@ class PostSnippet extends Component {
         <Button
           type='submit'
           variant='contained'
-          color='primary'
+          color='secondary'
           className={classes.submitButton}
           disabled={loading}
           onClick={this.handleSubmit}
         >
           {loading && (
-            <CircularProgress size={30} className={classes.progressSpinner} />
+            <CircularProgress size={25} className={classes.progressSpinnerSubmit} />
           )}
           Submit
         </Button>
@@ -409,5 +414,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   postSnippet,
   clearErrors,
-  setError
+  setError,
+  setLoading,
 })(withStyles(styles)(PostSnippet));

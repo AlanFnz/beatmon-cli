@@ -67,7 +67,7 @@ class CommentForm extends Component {
                         />
                         <Button type="submit"
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         className={classes.button}
                         >Submit</Button>
                 </form>

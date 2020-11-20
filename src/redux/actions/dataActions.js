@@ -249,14 +249,22 @@ export const deleteComment = (commentId) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
+// Clear errors
 export const clearErrors = () => (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
 };
 
+// Clear snippets
 export const clearSnippets = () => (dispatch) => {
   dispatch({ type: CLEAR_SNIPPETS });
 };
 
+// Set an error
 export const setError = (error) => (dispatch) => {
   dispatch({ type: SET_ERRORS, payload: error});
+};
+
+// Just set loading UI
+export const setLoading = () => (dispatch) => {
+  dispatch({ type: LOADING_UI });
 };
