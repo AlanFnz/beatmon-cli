@@ -23,6 +23,7 @@ import {
   getUserData,
   getMoreUserSnippetsNav,
   clearSnippets,
+  clearErrors,
 } from '../redux/actions/dataActions';
 
 const styles = (theme) => ({
@@ -31,7 +32,7 @@ const styles = (theme) => ({
   },
   progressContainer: {
     margin: '0 auto',
-  }
+  },
 });
 
 class user extends Component {
@@ -43,12 +44,15 @@ class user extends Component {
       snippetIdParam: null,
       userHandle: null,
       firstLoad: true,
+      noSnippets: false,
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   handleClickTop = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      '#back-to-top-anchor'
+    );
 
     if (anchor) {
       anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -56,6 +60,7 @@ class user extends Component {
   };
 
   handleScroll() {
+    if (this.state.noSnippets === true) return
     const windowHeight =
       'innerHeight' in window
         ? window.innerHeight
@@ -99,9 +104,11 @@ class user extends Component {
     if (snippetId) this.setState({ snippetIdParam: snippetId });
     if (userHandle) this.setState({ userHandle: userHandle });
 
-    // Get user details
-    this.props.getUserData(userHandle);
-    // Get user snippets
+    // Get user details and snippets
+    await this.props.getUserData(userHandle);
+    if (this.props.data.snippets.length === 0) {
+      this.setState({ noSnippets: true });
+    }
     axios
       .get(`/user/${userHandle}`)
       .then((res) => {
@@ -110,6 +117,11 @@ class user extends Component {
         });
       })
       .catch((err) => console.log(err));
+  }
+
+  async componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    await this.props.clearErrors();
   }
 
   render() {
@@ -123,25 +135,26 @@ class user extends Component {
     const { classes } = this.props;
     const isLoggedUser = handle === this.state.userHandle ? true : false;
 
-    let circularProgress = !loading ? ( null ) : ( <CircularProgress size={30} className={classes.progressSpinner} /> );
+    let circularProgress = !loading ? null : (
+      <CircularProgress size={30} className={classes.progressSpinner} />
+    );
 
-    let snippetsMap =
-      snippets === null ? (
-        <p>No snippets from this user</p>
-      ) : !snippetIdParam ? (
-        snippets.map((snippet) => (
-          <Snippet key={snippet.snippetId} snippet={snippet} />
-        ))
-      ) : (
-        snippets.map((snippet) => {
-          if (snippet.snippetId !== snippetIdParam)
-            return <Snippet key={snippet.snippetId} snippet={snippet} />
-          else
-            return (
-              <Snippet key={snippet.snippetId} snippet={snippet} openDialog />
-            );
-        })
-      );
+    let snippetsMap = !snippets ? (
+      <p>No snippets from this user</p>
+    ) : !snippetIdParam ? (
+      snippets.map((snippet) => (
+        <Snippet key={snippet.snippetId} snippet={snippet} />
+      ))
+    ) : (
+      snippets.map((snippet) => {
+        if (snippet.snippetId !== snippetIdParam)
+          return <Snippet key={snippet.snippetId} snippet={snippet} />;
+        else
+          return (
+            <Snippet key={snippet.snippetId} snippet={snippet} openDialog />
+          );
+      })
+    );
 
     let snippetsMarkup;
     if (this.state.firstLoad) {
@@ -151,8 +164,8 @@ class user extends Component {
     }
 
     return (
-      <Container maxWidth='md'>
-        <div id='back-to-top-anchor' ></div>
+      <Container maxWidth="md">
+        <div id="back-to-top-anchor"></div>
         <Grid container spacing={1}>
           <Hidden smUp>
             <Grid item sm={4} xs={12}>
@@ -169,9 +182,9 @@ class user extends Component {
             {snippetsMarkup}
             <Grid
               container
-              direction='column'
-              alignItems='center'
-              justify='center'
+              direction="column"
+              alignItems="center"
+              justify="center"
             >
               {circularProgress}
               <ScrollTop window={window} handleClickTop={this.handleClickTop}>
@@ -182,10 +195,10 @@ class user extends Component {
                 >
                   <KeyboardArrowUpIcon />
                 </Fab>
-              </ScrollTop >
+              </ScrollTop>
             </Grid>
           </Grid>
-          <Hidden only='xs'>
+          <Hidden only="xs">
             <Grid item sm={4} xs={12}>
               {this.state.profile === null ? (
                 <ProfileSkeleton />
@@ -216,4 +229,5 @@ export default connect(mapStateToProps, {
   getUserData,
   getMoreUserSnippetsNav,
   clearSnippets,
+  clearErrors,
 })(withStyles(styles)(user));

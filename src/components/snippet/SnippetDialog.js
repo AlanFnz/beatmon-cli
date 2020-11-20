@@ -76,9 +76,6 @@ const styles = (theme) => ({
     fontWeight: '700',
   },
   gridContainer: {
-    [theme.breakpoints.down('xs')]: {
-      textAlign: 'center',
-    },
     [theme.breakpoints.down('md')]: {
       maxWidth: '400px',
       margin: '0px auto',
@@ -206,8 +203,10 @@ class SnippetDialog extends SnippetBase {
             <span>{playCount} </span>
         </Grid>
         <hr className={classes.visibleSeparator} />
-        <CommentForm snippetId={snippetId} />
-        <Comments comments={comments} />
+        <Grid xs={12}>
+          <CommentForm snippetId={snippetId} />
+          <Comments comments={comments} />
+        </Grid>
       </Grid>
     );
 

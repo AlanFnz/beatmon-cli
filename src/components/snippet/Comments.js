@@ -18,9 +18,26 @@ const styles = (theme) => ({
     objectFit: 'cover',
     borderRadius: '50%',
     marginLeft: 15,
+    [theme.breakpoints.down('sm')]: {
+      marginRight: 5,
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 10,
+    },
   },
   commentData: {
-    marginLeft: 25,
+    // [theme.breakpoints.up('lg')]: {
+    //   marginLeft: 50,
+    // },
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 30,
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 25,
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 10,
+    },
   },
 });
 

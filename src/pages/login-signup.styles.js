@@ -3,6 +3,10 @@ export const styles = (theme) => ({
     textAlign: 'center',
   },
 
+  formGrid: {
+    margin: '0 auto',
+  },
+
   hidden: {
     visibility: 'hidden',
   },

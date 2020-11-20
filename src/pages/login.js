@@ -55,7 +55,7 @@ class login extends Component {
     return (
       <Grid container className={`${classes.form} ${classes.margin}`}>
         <Grid item sm />
-        <Grid item sm>
+        <Grid item sm className={classes.formGrid}>
           <img src={AppIcon} alt='App Icon' className={classes.image} />
           <Typography variant='h3' className={classes.pageTitle}>
             Welcome!
