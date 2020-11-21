@@ -75,7 +75,7 @@ const styles = (theme) => ({
     fontSize: '16px'
   },
   body: {
-    margin: '4px 0px 5px 6px',
+    margin: '4px 0px 5px 8px',
   },
 });
 

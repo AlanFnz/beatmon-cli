@@ -50,6 +50,9 @@ const styles = (theme) => ({
   },
   loginSignUpMessage: {
     fontSize: '1.2rem',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1rem',
+    },
   },
   hereLink: {
     color: '#ffad1f',
