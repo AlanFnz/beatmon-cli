@@ -203,7 +203,7 @@ class SnippetDialog extends SnippetBase {
             <span>{playCount} </span>
         </Grid>
         <hr className={classes.visibleSeparator} />
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <CommentForm snippetId={snippetId} />
           <Comments comments={comments} />
         </Grid>
@@ -223,8 +223,6 @@ class SnippetDialog extends SnippetBase {
           open={this.state.open}
           onClose={this.handleClose}
           fullWidth
-          //TODO: Review this prop
-          maxWidth='false'
           PaperProps={{
             style: {
               maxWidth: '475px',

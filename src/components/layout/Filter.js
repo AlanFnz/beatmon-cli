@@ -77,6 +77,7 @@ class Filter extends Component {
         variant="body2"
         color="primary"
         className={classes.genre}
+        key={genre}
       >
         #{genre}
         <span> </span>
@@ -98,8 +99,6 @@ class Filter extends Component {
           <Accordion className={classes.accordion }>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
             >
               <Typography variant="h5" align="center" className={classes.title}>
                 Filter by genre

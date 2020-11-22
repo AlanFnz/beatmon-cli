@@ -1,15 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { createRef, PureComponent } from 'react';
 
 export default class FilePicker extends PureComponent {
   constructor() {
     super();
+    this.fileRef = createRef();
     this.state = {
       key: 0,
     };
   }
 
   handleChange = () => {
-    this.props.onChange(this.refs.file.files[0]);
+    this.props.onChange(this.fileRef.current.files[0]);
     this.setState({
       key: this.state.key + 1,
     });
@@ -22,7 +23,7 @@ export default class FilePicker extends PureComponent {
         <input
           type='file'
           key={this.state.key}
-          ref='file'
+          ref={this.fileRef}
           onChange={this.handleChange}
           style={{ display: 'none' }}
           accept='audio/mp3,audio/wav'
