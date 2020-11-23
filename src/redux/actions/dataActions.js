@@ -89,10 +89,10 @@ export const getUserData = (userHandle) => (dispatch) => {
         payload: res.data,
       });
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch({
-        type: SET_SNIPPETS,
-        payload: null,
+        type: SET_ERRORS,
+        payload: err.response.data,
       });
     });
 };

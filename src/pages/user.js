@@ -116,7 +116,12 @@ class user extends Component {
           profile: res.data.userData.user,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => { 
+        this.props.history.push({
+          pathname: '/error',
+          state: { message: `It seems like that user doesn't exist!`}
+        }); 
+        console.log(err)});
   }
 
   async componentWillUnmount() {

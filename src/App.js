@@ -24,6 +24,7 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import User from './pages/user';
+import Error from './pages/error';
 // Firebase
 import firebase from 'firebase';
 import config from './util/config';
@@ -77,6 +78,11 @@ function App() {
                 exact
                 path='/signup'
                 component={Signup}
+              />
+              <AuthRoute
+                exact
+                path='/error'
+                component={Error}
               />
               {/* <Route exact path='/users/:handle' component={User} /> */}
               <Route exact path='/users/:handle' render={(props) => <User {...props} key={uuidv4()}/>} />
